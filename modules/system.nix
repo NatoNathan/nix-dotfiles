@@ -8,6 +8,7 @@
     isNormalUser = true;
     description = username;
     extraGroups = ["networkmanager" "wheel" "audio"];
+    shell = pkgs.zsh;
   };
 
   nix.settings = {
@@ -55,5 +56,7 @@
     neovim
     neofetch
   ];
+
+  programs.zsh.enable = true;
   programs.dconf.enable = true;
 }

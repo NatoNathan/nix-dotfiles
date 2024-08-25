@@ -99,11 +99,12 @@
       "$notificationCenterClient" = "swaync-client -t -sw";
       "$passwardManager" = "1password --quick-access";
       "$1passwordClient" = "1password --toggle";
+      "$bar" = "ags";
 
       exec-once = [
         "$notificationCenter"
         "lxqt-policykit-agent"
-        "waybar"
+        "$bar"
         "1password --silent"
       ];
 

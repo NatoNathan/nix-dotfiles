@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  programs.zoxide = {
+  programs.nnn = {
     enable = true;
   };
 }

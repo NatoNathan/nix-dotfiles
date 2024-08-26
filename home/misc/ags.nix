@@ -1,10 +1,10 @@
-{ inputs, pkgs, ...}:{
+{ inputs, pkgs, username, ...}:{
  imports = [ inputs.ags.homeManagerModules.default ];
 
  programs.ags = {
   enable = true;
 
-  configDir = ../configs/ags;
+  configDir = ./ags;
 
   extraPackages = with pkgs; [];
  };

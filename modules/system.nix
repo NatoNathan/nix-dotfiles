@@ -1,21 +1,14 @@
-{
-  pkgs,
-  lib,
-  username,
-  ...
-}: {
+{ pkgs, lib, username, ... }: {
   users.users.${username} = {
     isNormalUser = true;
     description = username;
-    extraGroups = ["networkmanager" "wheel" "audio"];
+    extraGroups = [ "networkmanager" "wheel" "audio" "vidio" ];
     shell = pkgs.zsh;
   };
 
-  nix.settings = {
-    experimental-features = ["nix-command" "flakes"];
-  };
+  nix.settings = { experimental-features = [ "nix-command" "flakes" ]; };
 
-      # do garbage collection weekly to keep disk usage low
+  # do garbage collection weekly to keep disk usage low
   nix.gc = {
     automatic = lib.mkDefault true;
     dates = lib.mkDefault "weekly";
@@ -25,7 +18,7 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-    # Set your time zone.
+  # Set your time zone.
   time.timeZone = "Europe/London";
 
   # Select internationalisation properties.
@@ -43,19 +36,32 @@
     LC_TIME = "en_GB.UTF-8";
   };
 
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Gohu" "Hack" "ZedMono"  ]; })
-  ];
+  fonts.packages = with pkgs;
+    [
+      (nerdfonts.override {
+        fonts = [ "FiraCode" "JetBrainsMono" "Gohu" "Hack" "ZedMono" ];
+      })
+    ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
     git
     neovim
     neofetch
   ];
+
+  # Enable Flatpak support 
+  services.flatpak.enable = true;
+  systemd.services.flatpak-repo = {
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.flatpak ];
+    script = ''
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    '';
+  };
 
   programs.zsh.enable = true;
   programs.dconf.enable = true;

@@ -21,6 +21,7 @@ in
         ./editors/nvim.nix
         ./editors/vscode.nix
         ./editors/helix.nix
+        ./editors/zed.nix
         ./shells/zsh.nix
         ./terminals/kitty.nix
         ./browsers/firefox.nix

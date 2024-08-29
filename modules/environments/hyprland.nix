@@ -2,7 +2,10 @@
   security.polkit.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
   services.gnome.gnome-keyring.enable = true; 
-  environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID";
+  environment.variables = {
+    XDG_RUNTIME_DIR = "/run/user/$UID";
+    NVD_BACKEND = "direct";
+  };
 
   environment.systemPackages = with pkgs; [
     swaynotificationcenter
@@ -11,6 +14,7 @@
     libsecret
     wireplumber
     xdg-desktop-portal-hyprland
+    nvidia-vaapi-driver
   ];
   programs.hyprland = {
     enable = true;

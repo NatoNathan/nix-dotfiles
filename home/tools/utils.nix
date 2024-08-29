@@ -6,8 +6,8 @@
     xz
     unzip
     p7zip
-
     wofi
+    tree
   ];
 
   programs.fzf = {

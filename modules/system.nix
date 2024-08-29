@@ -1,4 +1,7 @@
-{ pkgs, lib, username, ... }: {
+{ pkgs, lib, username, ... }: let
+  spotify.tcpPorts = [ 57621 ];
+  spotify.udpPorts = [ 5353 ];
+in {
   users.users.${username} = {
     isNormalUser = true;
     description = username;
@@ -65,4 +68,8 @@
 
   programs.zsh.enable = true;
   programs.dconf.enable = true;
+
+  # Open ports (Use named variables instead of magic numbers, future you will thank you)
+  networking.firewall.allowedTCPPorts = spotify.tcpPorts ++ [];
+  networking.firewall.allowedUDPPorts = spotify.udpPorts ++ [];
 }

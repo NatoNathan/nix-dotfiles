@@ -7,7 +7,7 @@ in
 
     imports = [
         ./environments/hyprland.nix
-        ./misc/ags.nix
+        ./misc/anyrun.nix
         ./tools/utils.nix
         ./tools/networking.nix
         ./tools/git.nix

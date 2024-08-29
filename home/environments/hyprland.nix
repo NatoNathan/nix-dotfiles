@@ -92,19 +92,16 @@
 
       # My Programs
       "$terminal" = "kitty";
-      "$browser" = "firefox";
+      "$browser" = "io.github.zen_browser.zen";
+      "$stableBrowser" = "firefox";
       "$fileManager" = "kitty nnn";
-      "$menu" = "wofi --show drun";
-      "$notificationCenter" = "swaync";
-      "$notificationCenterClient" = "swaync-client -t -sw";
+      "$menu" = "anyrun";
       "$passwardManager" = "1password --quick-access";
       "$1passwordClient" = "1password --toggle";
-      "$bar" = "ags";
 
       exec-once = [
-        "$notificationCenter"
         "lxqt-policykit-agent"
-        "$bar"
+        "${pkgs.hyprpanel}/bin/hyprpanel"
         "1password --silent"
       ];
 
@@ -128,9 +125,10 @@
         "$mainMod, Q, exec, $terminal"
         "$mainMod, E, exec, $fileManager"
         "$mainMod, R, exec, $menu"
-        "$mainMod, N, exec, $notificationCenterClient"
         "$mainMod, W, exec, $browser"
-        "$mainMod SHIFT, W, exec, $browser -private-window"
+        "$mainMod SHIFT, W, exec, $browser --private-window"
+        "$mainMod, F,  exec, $stableBrowser"
+        "$mainMod SHIFT, F, exec, $stableBrowser -private-window"
         "Control_L SHIFT, SPACE, exec, $passwardManager"
         "$mainMod SHIFT, SPACE, exec, $1passwordClient"
 

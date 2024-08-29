@@ -6,7 +6,6 @@
     xz
     unzip
     p7zip
-    wofi
     tree
   ];
 
@@ -30,5 +29,12 @@
     enable = true;
   };
 
+  programs.bat = {
+    enable = true;
+  };
+
+  programs.fd = {
+    enable = true;
+  };
   
 }

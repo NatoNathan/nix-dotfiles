@@ -1,8 +1,19 @@
-{ pkgs, ...}:
+{ pkgs, ... }:
 {
+
+  home.packages = with pkgs; [
+    grimblast
+    gpu-screen-recorder
+    matugen
+    swww
+    dart-sass
+    brightnessctl
+    hyprpicker
+    python312Packages.gpustat
+  ];
   wayland.windowManager.hyprland = {
     enable = true;
-    systemd.variables = ["--all"];
+    systemd.variables = [ "--all" ];
     settings = {
       monitor = [
         "DP-1, 2560x2880@59.96, -1930x0, 1.3333333"
@@ -89,7 +100,6 @@
         sensitivity = 0;
       };
 
-
       # My Programs
       "$terminal" = "kitty";
       "$browser" = "io.github.zen_browser.zen";
@@ -98,70 +108,80 @@
       "$menu" = "anyrun";
       "$passwardManager" = "1password --quick-access";
       "$1passwordClient" = "1password --toggle";
+      "$notification" = "ags -t notificationsmenu";
+      "$dashboad" = "ags -t dashboardmenu";
+      "$audio" = "ags -t audiomenu";
 
       exec-once = [
         "lxqt-policykit-agent"
         "${pkgs.hyprpanel}/bin/hyprpanel"
         "1password --silent"
+        "clipse -listen"
       ];
 
       cursor = {
         "no_hardware_cursors" = true;
       };
 
-      "$mainMod" = "SUPER";# Sets "Windows" key as main modifier
+      "$mainMod" = "SUPER"; # Sets "Windows" key as main modifier
 
-      bind = [
-        # General
-        "$mainMod, C, killactive,"
-        "$mainMod, M, exit,"
-        "$mainMod, V, togglefloating,"
+      bind =
+        [
+          # General
+          "$mainMod, C, killactive,"
+          "$mainMod, M, exit,"
+          "$mainMod, V, togglefloating,"
 
-        # dwindle tiling
-        "$mainMod, P, pseudo, dwindle"
-        "$mainMod, J, togglesplit, dwindle"
-        
-        # Programs
-        "$mainMod, Q, exec, $terminal"
-        "$mainMod, E, exec, $fileManager"
-        "$mainMod, R, exec, $menu"
-        "$mainMod, W, exec, $browser"
-        "$mainMod SHIFT, W, exec, $browser --private-window"
-        "$mainMod, F,  exec, $stableBrowser"
-        "$mainMod SHIFT, F, exec, $stableBrowser -private-window"
-        "Control_L SHIFT, SPACE, exec, $passwardManager"
-        "$mainMod SHIFT, SPACE, exec, $1passwordClient"
+          # dwindle tiling
+          "$mainMod, P, pseudo, dwindle"
+          "$mainMod, J, togglesplit, dwindle"
 
-        # Focus
-        "$mainMod, left, moveFocus, l"
-        "$mainMod, H, moveFocus, l" # h is alias for left in vim
-        "$mainMod, right, moveFocus, r"
-        "$mainMod, L, moveFocus, r" # l is alias for right in vim
-        "$mainMod, up, moveFocus, u"
-        "$mainMod, k, moveFocus, u" # k is alias for up in vim
-        "$mainMod, down, moveFocus, d"
-        "$mainMod, J, moveFocus, d" # j is alias for down in vim
+          # Programs
+          "$mainMod, P, exec, $terminal --class clipse -e 'clipse'"
+          "$mainMod, Q, exec, $terminal"
+          "$mainMod, E, exec, $fileManager"
+          "$mainMod, N, exec, $notification"
+          "$mainMod, D, exec, $dashboad"
+          "$mainMod, A, exec, $audio"
+          "$mainMod, R, exec, $menu"
+          "$mainMod, W, exec, $browser"
+          "$mainMod SHIFT, W, exec, $browser --private-window"
+          "$mainMod, F,  exec, $stableBrowser"
+          "$mainMod SHIFT, F, exec, $stableBrowser -private-window"
+          "Control_L SHIFT, SPACE, exec, $passwardManager"
+          "$mainMod SHIFT, SPACE, exec, $1passwordClient"
 
-        # Special Workspaces
-        "$mainMod, S, togglespecialworkspace, magic"
-        "$mainMod SHIFT, S, movetoworkspace, special:magic"
+          # Focus
+          "$mainMod, left, moveFocus, l"
+          "$mainMod, right, moveFocus, r"
+          "$mainMod, up, moveFocus, u"
+          "$mainMod, down, moveFocus, d"
 
-      ] ++ (
-        # workspaces
-        # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
-        builtins.concatLists (builtins.genList (
-            x: let
-              ws = let
-                c = (x + 1) / 10;
+          # Special Workspaces
+          "$mainMod, S, togglespecialworkspace, magic"
+          "$mainMod SHIFT, S, movetoworkspace, special:magic"
+
+        ]
+        ++ (
+          # workspaces
+          # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
+          builtins.concatLists (
+            builtins.genList (
+              x:
+              let
+                ws =
+                  let
+                    c = (x + 1) / 10;
+                  in
+                  builtins.toString (x + 1 - (c * 10));
               in
-                builtins.toString (x + 1 - (c * 10));
-            in [
-              "$mainMod, ${ws}, workspace, ${toString (x + 1)}"
-              "$mainMod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
-            ]
+              [
+                "$mainMod, ${ws}, workspace, ${toString (x + 1)}"
+                "$mainMod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
+              ]
+            ) 10
           )
-          10)
-      );
+        );
 
       bindm = [
         # Move/Resize Windows
@@ -184,6 +204,15 @@
         "center,title:^(Authentication Required)$"
         "size 400 200,title:^(PolicykitAuthentication RequiredAgentGUI)$"
 
+        # Float and center 1Password dialogs
+        "float, title:^(Unlock 1Password)$"
+        "center,title:^(Unlock 1Password)$"
+
+        # Float, center, and resize Clipse
+        "float, title:^(Clipse)$"
+        "center,title:^(Clipse)$"
+        "size 622 652,title:^(Clipse)$"
+
         # Ignore maximize events
         "suppressevent maximize, class:.*"
       ];
@@ -192,14 +221,14 @@
 
   # Environment Variables for Hyprland
   home.sessionVariables = {
-    GDK_SCALE= "2";
-    XCURSOR_SIZE= "32";
-    HYPRCURSOR_SIZE= "24";
-    LIBVA_DRIVER_NAME= "nvidia";
-    XDG_SESSION_TYPE= "wayland";
-    GBX_BACKEND= "nvidia-drm";
-    GLX_VENDOR_LIBRARY_NAME= "nvidia";
-    ELECTRON_OZONE_PLATFORM_HINT= "auto";
-    NIXOS_OZONE_WL= "1";
+    GDK_SCALE = "2";
+    XCURSOR_SIZE = "32";
+    HYPRCURSOR_SIZE = "24";
+    LIBVA_DRIVER_NAME = "nvidia";
+    XDG_SESSION_TYPE = "wayland";
+    GBX_BACKEND = "nvidia-drm";
+    GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    NIXOS_OZONE_WL = "1";
   };
 }

@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home.packages = with pkgs; [
     iotop
     neofetch
@@ -7,6 +8,9 @@
     unzip
     p7zip
     tree
+    clipse
+    nil
+    nixfmt-rfc-style
   ];
 
   programs.fzf = {
@@ -36,5 +40,5 @@
   programs.fd = {
     enable = true;
   };
-  
+
 }

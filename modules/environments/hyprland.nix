@@ -1,14 +1,14 @@
-{inputs, pkgs, ...}: {
+{ inputs, pkgs, ... }:
+{
   security.polkit.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
-  services.gnome.gnome-keyring.enable = true; 
+  services.gnome.gnome-keyring.enable = true;
   environment.variables = {
     XDG_RUNTIME_DIR = "/run/user/$UID";
     NVD_BACKEND = "direct";
   };
 
   environment.systemPackages = with pkgs; [
-    swaynotificationcenter
     wl-clipboard
     lxqt.lxqt-policykit
     libsecret

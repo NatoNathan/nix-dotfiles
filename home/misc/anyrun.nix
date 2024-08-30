@@ -1,6 +1,8 @@
-{ inputs,  pkgs, ...}:let 
+{ inputs, pkgs, ... }:
+let
   anyrun_plugins = inputs.anyrun.packages.${pkgs.system};
-in {
+in
+{
   imports = [ inputs.anyrun.homeManagerModules.default ];
   programs.anyrun = {
     enable = true;
@@ -12,9 +14,15 @@ in {
         websearch
         # "anyrun-plugin-bar"
       ];
-      x = { fraction = 0.5; };
-      y = { fraction = 0.3; };
-      width = { fraction = 0.3; };
+      x = {
+        fraction = 0.5;
+      };
+      y = {
+        fraction = 0.3;
+      };
+      width = {
+        fraction = 0.3;
+      };
       hideIcons = false;
       ignoreExclusiveZones = false;
       layer = "top";

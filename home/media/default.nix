@@ -1,10 +1,12 @@
-{ pkgs, pkgs-stable, ...}:{
+{ pkgs, pkgs-stable, ... }:
+{
 
   home.packages = [
     pkgs.pavucontrol
     pkgs-stable.spotify
     pkgs.grim
-    pkgs.watershot
+    pkgs.slurp
+    pkgs.swappy
   ];
 
   programs.obs-studio = {

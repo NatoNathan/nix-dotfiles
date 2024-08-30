@@ -1,5 +1,5 @@
-{ inputs, pkgs, ...}: 
-let 
+{ inputs, pkgs, ... }:
+let
   hyprland = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   hyprlandWaylandSessions = "${hyprland}/share/wayland-sessions";
 

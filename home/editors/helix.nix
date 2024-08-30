@@ -1,8 +1,5 @@
-{pkgs, ...}:{
-
-  home.packages = with pkgs; [
-    nixfmt # may move to home/tools/utils.nix
-  ];
+{ pkgs, ... }:
+{
 
   programs.helix = {
     enable = true;
@@ -14,10 +11,12 @@
         select = "underline";
       };
     };
-    languages.language = [{
-      name = "nix";
-      auto-format = true;
-      formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
-    }];
+    languages.language = [
+      {
+        name = "nix";
+        auto-format = true;
+        formatter.command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
+      }
+    ];
   };
 }

@@ -2,17 +2,23 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, config, pkgs, hostname, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  hostname,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../modules/environments/hyprland.nix
-      ../../modules/greetd.nix
-      ../../modules/_1password.nix
-      ../../modules/system.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../../modules/environments/hyprland.nix
+    ../../modules/greetd.nix
+    ../../modules/_1password.nix
+    ../../modules/system.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -28,7 +34,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-
   # Configure keymap in X11
   services.xserver = {
     xkb = {
@@ -38,7 +43,7 @@
   };
 
   # Enable Blueman
-  services.blueman.enable = true; 
+  services.blueman.enable = true;
 
   security.rtkit.enable = true;
   services.pipewire = {
@@ -62,14 +67,14 @@
   };
 
   # GPU Stuff
-  
+
   # Enable OpenGL
   hardware.graphics = {
     enable = true;
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
 
@@ -96,7 +101,7 @@
     open = false;
 
     # Enable the Nvidia settings menu,
-	# accessible via `nvidia-settings`.
+    # accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.

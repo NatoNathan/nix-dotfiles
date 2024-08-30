@@ -1,15 +1,42 @@
-{ pkgs, lib, username, ... }: let
+{
+  pkgs,
+  lib,
+  username,
+  ...
+}:
+let
   spotify.tcpPorts = [ 57621 ];
   spotify.udpPorts = [ 5353 ];
-in {
+in
+{
   users.users.${username} = {
     isNormalUser = true;
     description = username;
-    extraGroups = [ "networkmanager" "wheel" "audio" "vidio" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "audio"
+      "vidio"
+    ];
     shell = pkgs.zsh;
   };
 
-  nix.settings = { experimental-features = [ "nix-command" "flakes" ]; };
+  virtualisation.docker = {
+    enable = true;
+    autoPrune.enable = true;
+    # Enable rootless mode
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
+
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
 
   # do garbage collection weekly to keep disk usage low
   nix.gc = {
@@ -39,12 +66,17 @@ in {
     LC_TIME = "en_GB.UTF-8";
   };
 
-  fonts.packages = with pkgs;
-    [
-      (nerdfonts.override {
-        fonts = [ "FiraCode" "JetBrainsMono" "Gohu" "Hack" "ZedMono" ];
-      })
-    ];
+  fonts.packages = with pkgs; [
+    (nerdfonts.override {
+      fonts = [
+        "FiraCode"
+        "JetBrainsMono"
+        "Gohu"
+        "Hack"
+        "ZedMono"
+      ];
+    })
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -70,6 +102,6 @@ in {
   programs.dconf.enable = true;
 
   # Open ports (Use named variables instead of magic numbers, future you will thank you)
-  networking.firewall.allowedTCPPorts = spotify.tcpPorts ++ [];
-  networking.firewall.allowedUDPPorts = spotify.udpPorts ++ [];
+  networking.firewall.allowedTCPPorts = spotify.tcpPorts ++ [ ];
+  networking.firewall.allowedUDPPorts = spotify.udpPorts ++ [ ];
 }

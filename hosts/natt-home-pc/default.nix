@@ -18,6 +18,7 @@
     ../../modules/greetd.nix
     ../../modules/_1password.nix
     ../../modules/system.nix
+    ../../modules/liquidctl.nix
   ];
 
   # Bootloader.

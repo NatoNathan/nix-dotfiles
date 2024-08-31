@@ -16,6 +16,7 @@
     ./tools/ssh.nix
     ./tools/tmux.nix
     ./tools/starship.nix
+    ./tools/direnv.nix
     ./media
     ./comms/discord.nix
     ./filemanagers/nnn.nix

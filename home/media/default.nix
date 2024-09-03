@@ -7,6 +7,8 @@
     pkgs.grim
     pkgs.slurp
     pkgs.swappy
+    pkgs.mpv
+    pkgs.playerctl
   ];
 
   programs.obs-studio = {

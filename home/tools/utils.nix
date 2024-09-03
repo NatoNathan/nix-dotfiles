@@ -11,6 +11,7 @@
     clipse
     nil
     nixfmt-rfc-style
+    devenv
   ];
 
   programs.fzf = {

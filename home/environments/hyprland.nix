@@ -10,6 +10,7 @@
     brightnessctl
     hyprpicker
     python312Packages.gpustat
+    hyprpanel
   ];
   wayland.windowManager.hyprland = {
     enable = true;
@@ -102,15 +103,15 @@
 
       # My Programs
       "$terminal" = "kitty";
-      "$browser" = "io.github.zen_browser.zen";
+      "$browser" = "firefox";
       "$stableBrowser" = "firefox";
       "$fileManager" = "kitty nnn";
       "$menu" = "anyrun";
       "$passwardManager" = "1password --quick-access";
       "$1passwordClient" = "1password --toggle";
-      "$notification" = "ags -t notificationsmenu";
-      "$dashboad" = "ags -t dashboardmenu";
-      "$audio" = "ags -t audiomenu";
+      "$notification" = "hyprpanel -t notificationsmenu";
+      "$dashboad" = "hyprpanel -t dashboardmenu";
+      "$audio" = "hyprpanel -t audiomenu";
 
       exec-once = [
         "lxqt-policykit-agent"
@@ -230,5 +231,12 @@
     GLX_VENDOR_LIBRARY_NAME = "nvidia";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
     NIXOS_OZONE_WL = "1";
+    OP_SERVICE_ACCOUNT_TOKEN = "$(secret-tool lookup service-account-token one-password)";
+  };
+
+  # Gnome Keyring
+  services.gnome-keyring = {
+    enable = true;
+    components = [ "secrets" "pkcs11" "ssh" ];
   };
 }

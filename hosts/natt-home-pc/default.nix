@@ -14,11 +14,14 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../modules/environments/hyprland.nix
-    ../../modules/greetd.nix
-    ../../modules/_1password.nix
     ../../modules/system.nix
+    ../../modules/environments/nixos.nix
+    ../../modules/hyprland.nix
+    ../../modules/greetd.nix
+    ../../modules/_1password/linux.nix
     ../../modules/liquidctl.nix
+    ../../modules/docker.nix
+    ../../modules/flatpak.nix
   ];
 
   # Bootloader.

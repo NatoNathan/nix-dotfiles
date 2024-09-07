@@ -1,10 +1,21 @@
 {
+  pkgs,
   username,
   ...
 }:
 {
   home.username = username;
   home.homeDirectory = "/home/${username}";
+
+  home.packages = with pkgs; [
+    clipse
+    pavucontrol
+    grim
+    slurp
+    swappy
+    playerctl
+    iotop
+  ];
 
   imports = [
     ./environments/hyprland.nix

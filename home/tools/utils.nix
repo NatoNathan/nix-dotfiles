@@ -1,14 +1,12 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    iotop
     neofetch
     zip
     xz
     unzip
     p7zip
     tree
-    clipse
     nil
     nixfmt-rfc-style
     devenv

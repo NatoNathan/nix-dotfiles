@@ -1,6 +1,10 @@
 { lib, pkgs, ... }:
 let
-  _1passwordgui = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+  op-ssh-sign = {
+    x86_64-linux = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+    x86_64-darwin = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+  };
+  _1passwordgui = op-ssh-sign.${pkgs.system};
 in
 {
 

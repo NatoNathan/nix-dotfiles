@@ -18,7 +18,7 @@
     ../../modules/environments/nixos.nix
     ../../modules/hyprland.nix
     ../../modules/greetd.nix
-    ../../modules/_1password/linux.nix
+    ../../modules/onepassword/linux.nix
     ../../modules/liquidctl.nix
     ../../modules/docker.nix
     ../../modules/flatpak.nix

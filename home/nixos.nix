@@ -15,6 +15,7 @@
     swappy
     playerctl
     iotop
+    protonmail-desktop
   ];
 
   imports = [
@@ -29,6 +30,8 @@
     ./tools/starship.nix
     ./tools/direnv.nix
     ./media
+    ./media/mpv.nix
+    ./media/obs.nix
     ./comms/discord.nix
     ./filemanagers/nnn.nix
     ./editors/nvim.nix

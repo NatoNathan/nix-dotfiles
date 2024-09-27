@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
 
   programs.helix = {
     enable = true;
     settings = {
-      theme = "monokai_pro_spectrum";
+      theme = lib.mkDefault "monokai_pro_spectrum";
       editor.cursor-shape = {
         normal = "block";
         insert = "bar";

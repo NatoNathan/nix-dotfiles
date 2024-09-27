@@ -8,6 +8,7 @@ in
 {
   services.greetd = {
     enable = true;
+    vt = 2;
     settings = {
       default_session = {
         command = "${tuigreet} --time --remember --remember-session --sessions ${hyprlandWaylandSessions}";
@@ -15,4 +16,6 @@ in
       };
     };
   };
+
+  boot.kernelParams = [ "console=tty1" ];
 }

@@ -1,12 +1,6 @@
 { pkgs, ... }:
 {
-  programs.neovim = {
+  programs.nixvim = {
     enable = true;
-    extraConfig = ''
-      set number relativenumber
-    '';
-    plugins = [
-      pkgs.vimPlugins.nvim-treesitter
-    ];
   };
 }

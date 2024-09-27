@@ -22,11 +22,25 @@
     ../../modules/liquidctl.nix
     ../../modules/docker.nix
     ../../modules/flatpak.nix
+    ../../modules/steam.nix
   ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.kernelModules = [ "sg" ];
+  swapDevices = [ {
+    device = "/var/lib/swapfile";
+    size = 32*1024; # 32 GiB
+  } ];
+  zramSwap.enable = true;
+
+  fileSystems."/mnt/homenas/media" = {
+    fsType = "nfs";
+    device = "10.19.1.1:/volume1/Media";
+    options = [ "x-systemd.automount" "noauto"];
+  };
 
   networking.hostName = hostname;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -38,6 +52,12 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  networking.interfaces.enp6s0 = {
+    ipv4.addresses = [{
+      address = "10.19.1.50";
+      prefixLength = 24;
+    }];
+  };
   # Configure keymap in X11
   services.xserver = {
     xkb = {

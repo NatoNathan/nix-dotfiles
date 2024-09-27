@@ -12,6 +12,8 @@
     python312Packages.gpustat
     hyprpanel
   ];
+  catppuccin.flavor = "mocha";
+  catppuccin.enable = true;
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.variables = [ "--all" ];
@@ -112,12 +114,14 @@
       "$notification" = "hyprpanel -t notificationsmenu";
       "$dashboad" = "hyprpanel -t dashboardmenu";
       "$audio" = "hyprpanel -t audiomenu";
+      "$email" = "protonmail-desktop";
 
       exec-once = [
         "lxqt-policykit-agent"
         "${pkgs.hyprpanel}/bin/hyprpanel"
         "1password --silent"
         "clipse -listen"
+        "hyprctl setcursor Bibata-Modern-Ice 24"
       ];
 
       cursor = {
@@ -151,6 +155,7 @@
           "$mainMod SHIFT, F, exec, $stableBrowser -private-window"
           "Control_L SHIFT, SPACE, exec, $passwardManager"
           "$mainMod SHIFT, SPACE, exec, $1passwordClient"
+          "$mainMod, T, exec, $email"
 
           # Focus
           "$mainMod, left, moveFocus, l"
@@ -190,6 +195,19 @@
         "$mainMod, mouse:273, resizewindow" # 273 is the right mouse button
       ];
 
+      bindel = [
+        # Audio
+        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+      ];
+
+      bindl = [
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioPlay, exec, playerctl play-pause"
+        ", XF86AudioPrev, exec, playerctl previous"
+        ", XF86AudioNext, exec, playerctl next"
+      ];
+
       # Window rules
       # Float polkit dialogs
       # windowrulev2 = float, title:^(Authentication Required)$
@@ -220,10 +238,48 @@
     };
   };
 
+  dconf = {
+    enable = true;
+    settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+      };
+    };
+  };
+
+
+  gtk = {
+    enable = true;
+    # Set the cursor theme  
+    cursorTheme = {
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Modern-Ice";
+      size = 24;
+    };
+
+    
+    gtk3.extraConfig = {
+      Settings = ''
+        gtk-application-prefer-dark-theme=1
+      '';
+    };
+    gtk4.extraConfig = {
+      Settings = ''
+        gtk-application-prefer-dark-theme=1
+      '';
+    };
+  };
+  qt = {
+    enable = true;
+    platformTheme.name = "kvantum";
+    style.name = "kvantum";
+  };
+
+
   # Environment Variables for Hyprland
   home.sessionVariables = {
     GDK_SCALE = "2";
-    XCURSOR_SIZE = "32";
+    XCURSOR_SIZE = "24";
     HYPRCURSOR_SIZE = "24";
     LIBVA_DRIVER_NAME = "nvidia";
     XDG_SESSION_TYPE = "wayland";
@@ -238,5 +294,30 @@
   services.gnome-keyring = {
     enable = true;
     components = [ "secrets" "pkcs11" "ssh" ];
+  };
+
+
+  programs.hyprlock = {
+    enable = true;
+    extraConfig = builtins.readFile ./hyprlock.conf;
+  };
+
+
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        after_sleep_cmd = "hyprctl dispatch dpms on";
+        ignore_dbus_inhibit = false;
+        lock_cmd = "hyprlock";
+      };
+
+      listener = [
+        {
+          timeout = 90;
+          on-timeout = "hyprlock";
+        }
+      ];
+    };
   };
 }

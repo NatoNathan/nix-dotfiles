@@ -7,6 +7,7 @@
       "wheel"
       "audio"
       "vidio"
+      "cdrom"
     ];
     shell = pkgs.zsh;
   };

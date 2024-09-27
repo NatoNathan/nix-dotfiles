@@ -25,8 +25,6 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  
-
   fonts.packages = with pkgs; [
     nerdfonts
     # (nerdfonts.override {

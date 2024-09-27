@@ -10,7 +10,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mac-app-util.url = "github:hraban/mac-app-util";
-    
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,8 +19,15 @@
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
 
-    anyrun = { 
+    catppuccin.url = "github:catppuccin/nix";
+
+    anyrun = {
       url = "github:anyrun-org/anyrun";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -34,10 +41,12 @@
       nix-darwin,
       mac-app-util,
       home-manager,
+      catppuccin,
+      nixvim,
       ...
     }:
     {
-      nixosConfigurations = { 
+      nixosConfigurations = {
         natt-home-pc =
           let
             system = "x86_64-linux";
@@ -66,6 +75,7 @@
             inherit specialArgs;
             inherit system;
             modules = [
+              catppuccin.nixosModules.catppuccin
               ./hosts/natt-home-pc
 
               home-manager.nixosModules.home-manager
@@ -74,15 +84,21 @@
                 home-manager.useUserPackages = true;
 
                 home-manager.extraSpecialArgs = inputs // specialArgs;
-                home-manager.users.${username} = import ./home/nixos.nix;
+                home-manager.users.${username} = {
+                  imports = [
+                    ./home/nixos.nix
+                    catppuccin.homeManagerModules.catppuccin
+                    nixvim.homeManagerModules.nixvim
+                  ];
+                };
               }
             ];
           };
       };
 
       darwinConfigurations = {
-        natt-macbook-pro = 
-          let 
+        natt-macbook-pro =
+          let
             system = "x86_64-darwin";
             pkgs-stable = import nixpkgs-stable {
               inherit system;
@@ -106,7 +122,6 @@
               mac-app-util.darwinModules.default
               ./hosts/natt-macbook-pro
 
-
               home-manager.darwinModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -116,7 +131,13 @@
                 ];
 
                 home-manager.extraSpecialArgs = inputs // specialArgs;
-                home-manager.users.${username} = import ./home/darwin.nix;
+                home-manager.users.${username} = {
+                  imports = [
+                    ./home/darwin.nix
+                    catppuccin.homeManagerModules.catppuccin
+                    nixvim.homeManagerModules.nixvim
+                  ];
+                };
               }
             ];
           };

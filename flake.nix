@@ -31,6 +31,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ags.url = "github:Aylur/ags/v2";
+
   };
 
   outputs =
@@ -87,8 +89,6 @@
                 home-manager.users.${username} = {
                   imports = [
                     ./home/nixos.nix
-                    catppuccin.homeManagerModules.catppuccin
-                    nixvim.homeManagerModules.nixvim
                   ];
                 };
               }
@@ -134,8 +134,6 @@
                 home-manager.users.${username} = {
                   imports = [
                     ./home/darwin.nix
-                    catppuccin.homeManagerModules.catppuccin
-                    nixvim.homeManagerModules.nixvim
                   ];
                 };
               }

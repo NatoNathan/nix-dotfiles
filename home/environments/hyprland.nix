@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
-
+  imports = [ inputs.catppuccin.homeManagerModules.catppuccin ];
   home.packages = with pkgs; [
     grimblast
     gpu-screen-recorder

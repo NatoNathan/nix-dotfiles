@@ -21,6 +21,7 @@
   imports = [
     ./environments/hyprland.nix
     ./misc/anyrun.nix
+    ./misc/ags.nix
     ./tools/utils.nix
     ./tools/networking.nix
     ./tools/git.nix

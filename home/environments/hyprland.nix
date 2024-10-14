@@ -19,8 +19,8 @@
     systemd.variables = [ "--all" ];
     settings = {
       monitor = [
-        "DP-1, 2560x2880@59.96, -1930x0, 1.3333333"
-        "DP-2, 2560x1440@164.96, 0x400, 1"
+        #"DP-1, 2560x2880@59.96, -1930x0, 1.3333333"
+        #"DP-2, 2560x1440@164.96, 0x400, 1"
       ];
 
       xwayland = {
@@ -281,12 +281,12 @@
     GDK_SCALE = "2";
     XCURSOR_SIZE = "24";
     HYPRCURSOR_SIZE = "24";
-    LIBVA_DRIVER_NAME = "nvidia";
+    #LIBVA_DRIVER_NAME = "nvidia";
     XDG_SESSION_TYPE = "wayland";
-    GBX_BACKEND = "nvidia-drm";
-    GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    #GBX_BACKEND = "nvidia-drm";
+    #GLX_VENDOR_LIBRARY_NAME = "nvidia";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
-    NIXOS_OZONE_WL = "1";
+    #NIXOS_OZONE_WL = "1";
     OP_SERVICE_ACCOUNT_TOKEN = "$(secret-tool lookup service-account-token one-password)";
   };
 

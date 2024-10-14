@@ -91,6 +91,52 @@
               }
             ];
           };
+          natt-framework-laptop =
+          let
+            system = "x86_64-linux";
+            pkgs-stable = import nixpkgs-stable {
+              inherit system;
+              config.allowUnfree = true;
+            };
+            pkgs = import nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = [
+                inputs.hyprpanel.overlay
+              ];
+            };
+            username = "natt";
+            hostname = "natt-framework-laptop";
+            specialArgs = {
+              inherit inputs;
+              inherit username;
+              inherit hostname;
+              inherit pkgs-stable;
+              inherit pkgs;
+            };
+          in
+          nixpkgs.lib.nixosSystem {
+            inherit specialArgs;
+            inherit system;
+            modules = [
+              catppuccin.nixosModules.catppuccin
+              ./hosts/natt-framework-laptop
+
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+
+                home-manager.extraSpecialArgs = inputs // specialArgs;
+                home-manager.users.${username} = {
+                  imports = [
+                    ./home/nixos.nix
+                  ];
+                };
+              }
+            ];
+          };
+
       };
 
       darwinConfigurations = {

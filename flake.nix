@@ -4,13 +4,14 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
-
+    nixos-hardware.url = "github:nixos/nixos-hardware";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mac-app-util.url = "github:hraban/mac-app-util";
 
+    nixpkgs-21ef15c.url = "github:nixos/nixpkgs/21ef15c";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,6 +38,8 @@
       self,
       nixpkgs,
       nixpkgs-stable,
+      nixpkgs-21ef15c,
+      nixos-hardware,
       nix-darwin,
       mac-app-util,
       home-manager,
@@ -50,6 +53,10 @@
           let
             system = "x86_64-linux";
             pkgs-stable = import nixpkgs-stable {
+              inherit system;
+              config.allowUnfree = true;
+            };
+            pkgs-21ef15c = import nixpkgs-21ef15c {
               inherit system;
               config.allowUnfree = true;
             };
@@ -67,6 +74,7 @@
               inherit username;
               inherit hostname;
               inherit pkgs-stable;
+              inherit pkgs-21ef15c;
               inherit pkgs;
             };
           in
@@ -76,7 +84,7 @@
             modules = [
               catppuccin.nixosModules.catppuccin
               ./hosts/natt-home-pc
-
+              nixos-hardware.nixosModules.framework-13th-gen-intel
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -91,10 +99,15 @@
               }
             ];
           };
-          natt-framework-laptop =
+        natt-framework-laptop =
           let
             system = "x86_64-linux";
             pkgs-stable = import nixpkgs-stable {
+              inherit system;
+              config.allowUnfree = true;
+            };
+
+            pkgs-21ef15c = import nixpkgs-21ef15c {
               inherit system;
               config.allowUnfree = true;
             };
@@ -112,6 +125,7 @@
               inherit username;
               inherit hostname;
               inherit pkgs-stable;
+              inherit pkgs-21ef15c;
               inherit pkgs;
             };
           in

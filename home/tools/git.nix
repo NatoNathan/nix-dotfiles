@@ -13,6 +13,9 @@ in
     userName = "NatoNathan";
     userEmail = "nathan@tamez.email";
     extraConfig = {
+      push = {
+        autoSetupRemote = true;
+      };
       gpg = {
         format = "ssh";
       };

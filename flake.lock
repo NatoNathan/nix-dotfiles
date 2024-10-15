@@ -607,6 +607,21 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1728729581,
+        "narHash": "sha256-oazkQ/z7r43YkDLLQdMg8oIB3CwWNb+2ZrYOxtLEWTQ=",
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "rev": "a8dd1b21995964b115b1e3ec639dd6ce24ab9806",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1728018373,
@@ -619,6 +634,22 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-21ef15c": {
+      "locked": {
+        "lastModified": 1699026748,
+        "narHash": "sha256-R0VKO5EgAXDRKhLC8wHyRiN/BM42kmONPv/u6MRv4WA=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "21ef15cc55ec43c4a5f8d952f58e87d964480b0a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "21ef15c",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -802,7 +833,9 @@
         "hyprpanel": "hyprpanel",
         "mac-app-util": "mac-app-util",
         "nix-darwin": "nix-darwin",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_5",
+        "nixpkgs-21ef15c": "nixpkgs-21ef15c",
         "nixpkgs-stable": "nixpkgs-stable_2",
         "nixvim": "nixvim"
       }

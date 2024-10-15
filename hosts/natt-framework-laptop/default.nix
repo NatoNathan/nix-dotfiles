@@ -6,6 +6,7 @@
   inputs,
   config,
   pkgs,
+  pkgs-21ef15c,
   hostname,
   ...
 }:
@@ -22,21 +23,61 @@
     ../../modules/docker.nix
     ../../modules/flatpak.nix
     ../../modules/steam.nix
+    ../../modules/keyd.nix
   ];
 
-  # Bootloader.
-  boot.initrd.luks.devices."luks-cdc58934-a09a-4113-8e51-7450c0452869".device = "/dev/disk/by-uuid/cdc58934-a09a-4113-8e51-7450c0452869";
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Bootloader configuration
+  boot = {
 
+    # boot drive encryption with LUKS stuff
+    initrd.luks.devices."luks-cdc58934-a09a-4113-8e51-7450c0452869".device = "/dev/disk/by-uuid/cdc58934-a09a-4113-8e51-7450c0452869";
+
+    # Use systemd-boot rather than GRUB
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+
+    # Play with the kernel for compatibility with framework 13
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [
+      '''"acpi_osi=!Windows 2020"''
+    ];
+  };
+
+  # enable a type of swap ram disk
   zramSwap.enable = true;
+  # enable fingerprint reader
+  services.fprintd.enable = true;
+
+
+  # battery management stuff
+  services.gvfs.enable = true;
+  services.power-profiles-daemon.enable = true;
+  services.upower.enable = true;
 
   fileSystems."/mnt/homenas/media" = {
     fsType = "nfs";
     device = "192.168.1.72:/volume1/Media";
-    options = [ "x-systemd.automount" "noauto"];
+    options = [
+      "x-systemd.automount"
+      "noauto"
+    ];
   };
 
+  services.logind.extraConfig = ''
+  # map the power button to suspend
+  HandlePowerKey=suspend
+  # map long power button press to power off
+  HandleSuspendKey=poweroff
+  '';
+
+  services.fwupd = {
+    enable = true;
+
+    # use a specific version of fwupd, not needed normally
+    # package = pkgs-21ef15c.fwupd;
+  };
+
+  # Network configuration
   networking.hostName = hostname;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -54,6 +95,15 @@
       variant = "";
     };
   };
+  # Enable OpenGL
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      vpl-gpu-rt
+    ];
+  };
+  # Enable the Intel video driver
+  services.xserver.videoDrivers = [ "intel" ];
 
   # Enable Blueman
   services.blueman.enable = true;
@@ -78,7 +128,6 @@
       };
     };
   };
-
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

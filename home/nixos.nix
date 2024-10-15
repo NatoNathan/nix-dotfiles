@@ -29,7 +29,8 @@
     ./tools/tmux.nix
     ./tools/starship.nix
     ./tools/direnv.nix
-    ./media
+    ./media/spotify.nix
+    ./media/tidal-hifi.nix
     ./media/mpv.nix
     ./media/obs.nix
     ./comms/discord.nix

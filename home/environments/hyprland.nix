@@ -108,6 +108,10 @@
           natural_scroll = true;
           clickfinger_behavior = true;
         };
+
+      };
+      gestures = {
+        workspace_swipe = true;
       };
 
       # My Programs
@@ -115,7 +119,7 @@
       "$browser" = "firefox";
       "$stableBrowser" = "firefox";
       "$fileManager" = "kitty nnn";
-      "$menu" = "anyrun";
+      "$menu" = "walker";
       "$passwardManager" = "1password --quick-access";
       "$1passwordClient" = "1password --toggle";
       "$notification" = "hyprpanel -t notificationsmenu";

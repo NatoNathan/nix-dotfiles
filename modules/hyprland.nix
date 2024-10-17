@@ -15,6 +15,11 @@
     libsecret
     wireplumber
     xdg-desktop-portal-hyprland
+    kdePackages.qtwayland
+    libsForQt5.qt5.qtwayland
+    kdePackages.qtsvg
+    kdePackages.kio-fuse 
+    kdePackages.kio-extras
     # nvidia-vaapi-driver
   ];
   programs.hyprland = {

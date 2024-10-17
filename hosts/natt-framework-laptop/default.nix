@@ -24,6 +24,7 @@
     ../../modules/flatpak.nix
     ../../modules/steam.nix
     ../../modules/keyd.nix
+    ../../modules/ollama
   ];
 
   # Bootloader configuration

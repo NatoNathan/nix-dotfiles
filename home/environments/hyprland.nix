@@ -172,15 +172,28 @@
           "$mainMod, right, moveFocus, r"
           "$mainMod, up, moveFocus, u"
           "$mainMod, down, moveFocus, d"
+          "$mainMod, Tab, cycleNext"
+
+          # Move Windows
+          "$mainMod SHIFT, left, moveWindow, l"
+          "$mainMod SHIFT, right, moveWindow, r"
+          "$mainMod SHIFT, up, moveWindow, u"
+          "$mainMod SHIFT, down, moveWindow, d"
+
+          "$mainMod SHIFT, Space, centerwindow"
 
           # Special Workspaces
           "$mainMod, S, togglespecialworkspace, magic"
           "$mainMod SHIFT, S, movetoworkspace, special:magic"
 
+          # Workspaces
+          # Next workspace
+          "$mainMod ALT_L, Tab, workspace, m+1"
+          # Previous workspace
+          "$mainMod ALT_L SHIFT, Tab, workspace, m-1"
+
         ]
         ++ (
-          # workspaces
-          # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
           builtins.concatLists (
             builtins.genList (
               x:
@@ -192,6 +205,7 @@
                   builtins.toString (x + 1 - (c * 10));
               in
               [
+                # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
                 "$mainMod, ${ws}, workspace, ${toString (x + 1)}"
                 "$mainMod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
               ]
@@ -212,8 +226,8 @@
         ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
         # Brightness
-        ",XF86MonBrightnessUp, exec, brightnessctl -s set +5%" # Increase brightness by 5%
-        ",XF86MonBrightnessDown, exec, brightnessctl -s set 5%-" # Decrease brightness by 5%
+        ", XF86MonBrightnessUp, exec, brightnessctl -s set +5%" # Increase brightness by 5%
+        ", XF86MonBrightnessDown, exec, brightnessctl -s set 5%-" # Decrease brightness by 5%
       ];
 
       bindl = [

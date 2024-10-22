@@ -27,10 +27,10 @@ up:
 
 # Update specific input
 # usage: make upp i=home-manager
-upp:
-  nix flake update $(i)
+upp INPUT:
+  nix flake update {{ INPUT }}
   git add flake.lock
-  git commit -m "Update flake input $(i)"
+  git commit -m "Update flake input {{ INPUT }}"
   git push
 
 # garbage collect all unused nix store entries

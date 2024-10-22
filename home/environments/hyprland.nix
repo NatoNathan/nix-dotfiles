@@ -18,12 +18,6 @@
     enable = true;
     systemd.variables = [ "--all" ];
     settings = {
-      monitor = [
-        "eDP-1, 2880x1920@120, 0x0, 1.33333333"
-        "Unknown-1,disable"
-        #"DP-1, 2560x2880@59.96, -1930x0, 1.3333333"
-        #"DP-2, 2560x1440@164.96, 0x400, 1"
-      ];
 
       xwayland = {
         force_zero_scaling = true;
@@ -295,7 +289,7 @@
     };    
     theme = {
       name = "Adwaita-dark";
-      package = pkgs.gnome.gnome-themes-extra;
+      package = pkgs.gnome-themes-extra;
     };
     gtk3.extraConfig = {
       Settings = ''
@@ -319,10 +313,7 @@
     GDK_SCALE = "2";
     XCURSOR_SIZE = "24";
     HYPRCURSOR_SIZE = "24";
-    #LIBVA_DRIVER_NAME = "nvidia";
     XDG_SESSION_TYPE = "wayland";
-    #GBX_BACKEND = "nvidia-drm";
-    #GLX_VENDOR_LIBRARY_NAME = "nvidia";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
     NIXOS_OZONE_WL = "1";
     OP_SERVICE_ACCOUNT_TOKEN = "$(secret-tool lookup service-account-token one-password)";

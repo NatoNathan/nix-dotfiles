@@ -23,7 +23,6 @@
     ../../modules/docker.nix
     ../../modules/flatpak.nix
     ../../modules/steam.nix
-    ../../modules/keyd.nix
     ../../modules/ollama/nvidia.nix
   ];
 
@@ -93,6 +92,14 @@
   };
 
   # GPU Stuff
+
+  environment.variables = {
+    NVD_BACKEND = "direct";
+  };
+
+  environment.systemPackages = with pkgs; [
+    nvidia-vaapi-driver
+  ];
 
   # Enable OpenGL
   hardware.graphics = {

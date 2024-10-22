@@ -20,7 +20,6 @@
     kdePackages.qtsvg
     kdePackages.kio-fuse 
     kdePackages.kio-extras
-    # nvidia-vaapi-driver
   ];
   programs.hyprland = {
     enable = true;

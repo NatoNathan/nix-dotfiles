@@ -84,7 +84,6 @@
             modules = [
               catppuccin.nixosModules.catppuccin
               ./hosts/natt-home-pc
-              nixos-hardware.nixosModules.framework-13th-gen-intel
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -93,7 +92,7 @@
                 home-manager.extraSpecialArgs = inputs // specialArgs;
                 home-manager.users.${username} = {
                   imports = [
-                    ./home/nixos.nix
+                    ./hosts/natt-home-pc/home.nix
                   ];
                 };
               }
@@ -144,7 +143,7 @@
                 home-manager.extraSpecialArgs = inputs // specialArgs;
                 home-manager.users.${username} = {
                   imports = [
-                    ./home/nixos.nix
+                    ./hosts/natt-framework-laptop/home.nix
                   ];
                 };
               }

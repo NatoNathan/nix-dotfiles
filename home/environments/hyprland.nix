@@ -18,10 +18,6 @@
     enable = true;
     systemd.variables = [ "--all" ];
     settings = {
-      monitor = [
-        "DP-1, 2560x2880@59.96, -1930x0, 1.3333333"
-        "DP-2, 2560x1440@164.96, 0x400, 1"
-      ];
 
       xwayland = {
         force_zero_scaling = true;
@@ -101,6 +97,15 @@
         follow_mouse = true;
 
         sensitivity = 0;
+
+        touchpad = {
+          natural_scroll = true;
+          clickfinger_behavior = true;
+        };
+
+      };
+      gestures = {
+        workspace_swipe = true;
       };
 
       # My Programs
@@ -108,14 +113,15 @@
       "$browser" = "firefox";
       "$stableBrowser" = "firefox";
       "$fileManager" = "kitty nnn";
-      "$menu" = "anyrun";
+      "$menu" = "walker";
       "$passwardManager" = "1password --quick-access";
       "$1passwordClient" = "1password --toggle";
       "$notification" = "hyprpanel -t notificationsmenu";
       "$dashboad" = "hyprpanel -t dashboardmenu";
       "$audio" = "hyprpanel -t audiomenu";
       "$email" = "protonmail-desktop";
-
+      "$snapshot" = ''grim -g "$(slurp)" - | swappy -f -'';
+      "$fullSnapshot" = ''grim -g "$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.x),\(.y) \((.width / .scale) | floor)x\((.height / .scale) | floor)"')" - | swappy -f -'';
       exec-once = [
         "lxqt-policykit-agent"
         "${pkgs.hyprpanel}/bin/hyprpanel"
@@ -156,21 +162,36 @@
           "Control_L SHIFT, SPACE, exec, $passwardManager"
           "$mainMod SHIFT, SPACE, exec, $1passwordClient"
           "$mainMod, T, exec, $email"
+          ", Print, exec, $fullSnapshot"
+          "$mainMod, Print, exec, $snapshot"
 
           # Focus
           "$mainMod, left, moveFocus, l"
           "$mainMod, right, moveFocus, r"
           "$mainMod, up, moveFocus, u"
           "$mainMod, down, moveFocus, d"
+          "$mainMod, Tab, cycleNext"
+
+          # Move Windows
+          "$mainMod SHIFT, left, moveWindow, l"
+          "$mainMod SHIFT, right, moveWindow, r"
+          "$mainMod SHIFT, up, moveWindow, u"
+          "$mainMod SHIFT, down, moveWindow, d"
+
+          "$mainMod SHIFT, Space, centerwindow"
 
           # Special Workspaces
           "$mainMod, S, togglespecialworkspace, magic"
           "$mainMod SHIFT, S, movetoworkspace, special:magic"
 
+          # Workspaces
+          # Next workspace
+          "$mainMod ALT_L, Tab, workspace, m+1"
+          # Previous workspace
+          "$mainMod ALT_L SHIFT, Tab, workspace, m-1"
+
         ]
         ++ (
-          # workspaces
-          # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
           builtins.concatLists (
             builtins.genList (
               x:
@@ -182,6 +203,7 @@
                   builtins.toString (x + 1 - (c * 10));
               in
               [
+                # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
                 "$mainMod, ${ws}, workspace, ${toString (x + 1)}"
                 "$mainMod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
               ]
@@ -192,13 +214,18 @@
       bindm = [
         # Move/Resize Windows
         "$mainMod, mouse:272, movewindow" # 272 is the left mouse button
+        "$mainMod, Control_L, movewindow" # 272 is the left mouse button
         "$mainMod, mouse:273, resizewindow" # 273 is the right mouse button
+        "$mainMod, ALT_L, resizewindow" # 273 is the right mouse button
       ];
 
       bindel = [
         # Audio
         ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        # Brightness
+        ", XF86MonBrightnessUp, exec, brightnessctl -s set +5%" # Increase brightness by 5%
+        ", XF86MonBrightnessDown, exec, brightnessctl -s set 5%-" # Decrease brightness by 5%
       ];
 
       bindl = [
@@ -232,6 +259,11 @@
         "center,title:^(Clipse)$"
         "size 622 652,title:^(Clipse)$"
 
+        # Float, center, and full screen swappy
+        "float, title:^(Swappy)$"
+        "center,title:^(Swappy)$"
+        "fullscreen,title:^(Swappy)$"
+
         # Ignore maximize events
         "suppressevent maximize, class:.*"
       ];
@@ -247,7 +279,6 @@
     };
   };
 
-
   gtk = {
     enable = true;
     # Set the cursor theme  
@@ -255,9 +286,11 @@
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Ice";
       size = 24;
+    };    
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
     };
-
-    
     gtk3.extraConfig = {
       Settings = ''
         gtk-application-prefer-dark-theme=1
@@ -275,16 +308,12 @@
     style.name = "kvantum";
   };
 
-
   # Environment Variables for Hyprland
   home.sessionVariables = {
     GDK_SCALE = "2";
     XCURSOR_SIZE = "24";
     HYPRCURSOR_SIZE = "24";
-    LIBVA_DRIVER_NAME = "nvidia";
     XDG_SESSION_TYPE = "wayland";
-    GBX_BACKEND = "nvidia-drm";
-    GLX_VENDOR_LIBRARY_NAME = "nvidia";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
     NIXOS_OZONE_WL = "1";
     OP_SERVICE_ACCOUNT_TOKEN = "$(secret-tool lookup service-account-token one-password)";
@@ -293,15 +322,19 @@
   # Gnome Keyring
   services.gnome-keyring = {
     enable = true;
-    components = [ "secrets" "pkcs11" "ssh" ];
+    components = [
+      "secrets"
+      "pkcs11"
+      "ssh"
+    ];
   };
 
+  
 
   programs.hyprlock = {
     enable = true;
     extraConfig = builtins.readFile ./hyprlock.conf;
   };
-
 
   services.hypridle = {
     enable = true;
@@ -309,13 +342,28 @@
       general = {
         after_sleep_cmd = "hyprctl dispatch dpms on";
         ignore_dbus_inhibit = false;
-        lock_cmd = "hyprlock";
+        lock_cmd = "pidof hyprlock || hyprlock";
+        before_sleep_cmd = "loginctl lock-session";
       };
 
       listener = [
         {
-          timeout = 90;
-          on-timeout = "hyprlock";
+          timeout = 150;
+          on-timeout = "brightnessctl -s set 10";         # set monitor backlight to minimum, avoid 0 on OLED monitor.
+          on-resume = "brightnessctl -r";                 # monitor backlight restore.
+        }
+        {
+          timeout = 300;
+          on-timeout = "loginctl lock-session";
+        }
+        {
+          timeout = 350;
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on";
+        }
+        {
+          timeout = 1800;
+          on-timeout = "systemctl suspend";
         }
       ];
     };

@@ -14,7 +14,7 @@
     ./tools/tmux.nix
     ./tools/starship.nix
     ./tools/direnv.nix
-    ./media
+    ./media/spotify.nix
     ./comms/discord.nix
     ./filemanagers/nnn.nix
     ./editors/nvim.nix

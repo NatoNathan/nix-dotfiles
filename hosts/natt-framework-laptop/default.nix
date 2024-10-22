@@ -6,6 +6,7 @@
   inputs,
   config,
   pkgs,
+  pkgs-21ef15c,
   hostname,
   ...
 }:
@@ -19,30 +20,65 @@
     ../../modules/hyprland.nix
     ../../modules/greetd.nix
     ../../modules/onepassword/linux.nix
-    ../../modules/liquidctl.nix
     ../../modules/docker.nix
     ../../modules/flatpak.nix
     ../../modules/steam.nix
-    ../../modules/ollama/nvidia.nix
+    ../../modules/keyd.nix
+    ../../modules/ollama
   ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # Bootloader configuration
+  boot = {
 
-  boot.kernelModules = [ "sg" ];
-  swapDevices = [ {
-    device = "/var/lib/swapfile";
-    size = 32*1024; # 32 GiB
-  } ];
+    # boot drive encryption with LUKS stuff
+    initrd.luks.devices."luks-cdc58934-a09a-4113-8e51-7450c0452869".device = "/dev/disk/by-uuid/cdc58934-a09a-4113-8e51-7450c0452869";
+
+    # Use systemd-boot rather than GRUB
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+
+    # Play with the kernel for compatibility with framework 13
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [
+      '''"acpi_osi=!Windows 2020"''
+    ];
+  };
+
+  # enable a type of swap ram disk
   zramSwap.enable = true;
+  # enable fingerprint reader
+  services.fprintd.enable = true;
+
+
+  # battery management stuff
+  services.gvfs.enable = true;
+  services.power-profiles-daemon.enable = true;
+  services.upower.enable = true;
 
   fileSystems."/mnt/homenas/media" = {
     fsType = "nfs";
-    device = "10.19.1.1:/volume1/Media";
-    options = [ "x-systemd.automount" "noauto"];
+    device = "192.168.1.72:/volume1/Media";
+    options = [
+      "x-systemd.automount"
+      "noauto"
+    ];
   };
 
+  services.logind.extraConfig = ''
+  # map the power button to suspend
+  HandlePowerKey=suspend
+  # map long power button press to power off
+  HandleSuspendKey=poweroff
+  '';
+
+  services.fwupd = {
+    enable = true;
+
+    # use a specific version of fwupd, not needed normally
+    # package = pkgs-21ef15c.fwupd;
+  };
+
+  # Network configuration
   networking.hostName = hostname;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -53,12 +89,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  networking.interfaces.enp6s0 = {
-    ipv4.addresses = [{
-      address = "10.19.1.50";
-      prefixLength = 24;
-    }];
-  };
   # Configure keymap in X11
   services.xserver = {
     xkb = {
@@ -66,6 +96,15 @@
       variant = "";
     };
   };
+  # Enable OpenGL
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      vpl-gpu-rt
+    ];
+  };
+  # Enable the Intel video driver
+  services.xserver.videoDrivers = [ "intel" ];
 
   # Enable Blueman
   services.blueman.enable = true;
@@ -89,56 +128,6 @@
         Experimental = true;
       };
     };
-  };
-
-  # GPU Stuff
-
-  environment.variables = {
-    NVD_BACKEND = "direct";
-  };
-
-  environment.systemPackages = with pkgs; [
-    nvidia-vaapi-driver
-  ];
-
-  # Enable OpenGL
-  hardware.graphics = {
-    enable = true;
-  };
-
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = [ "nvidia" ];
-
-  hardware.nvidia = {
-
-    # Modesetting is required.
-    modesetting.enable = true;
-
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    # Enable this if you have graphical corruption issues or application crashes after waking
-    # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
-    # of just the bare essentials.
-    powerManagement.enable = false;
-
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = false;
-
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of
-    # supported GPUs is at:
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-    # Only available from driver 515.43.04+
-    # Currently alpha-quality/buggy, so false is currently the recommended setting.
-    open = false;
-
-    # Enable the Nvidia settings menu,
-    # accessible via `nvidia-settings`.
-    nvidiaSettings = true;
-
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   # Open ports in the firewall.

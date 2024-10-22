@@ -16,11 +16,12 @@
     playerctl
     iotop
     protonmail-desktop
+    prismlauncher
   ];
 
   imports = [
     ./environments/hyprland.nix
-    ./misc/anyrun.nix
+    ./misc/walker.nix
     ./tools/utils.nix
     ./tools/networking.nix
     ./tools/git.nix
@@ -29,11 +30,13 @@
     ./tools/tmux.nix
     ./tools/starship.nix
     ./tools/direnv.nix
-    ./media
+    ./media/spotify.nix
+    ./media/tidal-hifi.nix
     ./media/mpv.nix
     ./media/obs.nix
     ./comms/discord.nix
     ./filemanagers/nnn.nix
+    ./filemanagers/mc.nix
     ./editors/nvim.nix
     ./editors/vscode.nix
     ./editors/helix.nix

@@ -6,7 +6,7 @@
   services.gnome.gnome-keyring.enable = true;
   environment.variables = {
     XDG_RUNTIME_DIR = "/run/user/$UID";
-    NVD_BACKEND = "direct";
+    #NVD_BACKEND = "direct";
   };
 
   environment.systemPackages = with pkgs; [
@@ -15,7 +15,11 @@
     libsecret
     wireplumber
     xdg-desktop-portal-hyprland
-    nvidia-vaapi-driver
+    kdePackages.qtwayland
+    libsForQt5.qt5.qtwayland
+    kdePackages.qtsvg
+    kdePackages.kio-fuse 
+    kdePackages.kio-extras
   ];
   programs.hyprland = {
     enable = true;

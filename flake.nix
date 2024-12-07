@@ -134,6 +134,7 @@
             modules = [
               catppuccin.nixosModules.catppuccin
               ./hosts/natt-framework-laptop
+              nixos-hardware.nixosModules.framework-intel-core-ultra-series1
 
               home-manager.nixosModules.home-manager
               {

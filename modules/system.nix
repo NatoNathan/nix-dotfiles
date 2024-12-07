@@ -26,17 +26,15 @@
   nixpkgs.config.allowUnfree = true;
 
   fonts.packages = with pkgs; [
-    nerdfonts
-    # (nerdfonts.override {
-    #   fonts = [
-    #     "FiraCode"
-    #     "JetBrainsMono"
-    #     "Gohu"
-    #     "Hack"
-    #     "ZedMono"
-    #     "Symbols"
-    #   ];
-    # })
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.zed-mono
+    nerd-fonts.roboto-mono
+    nerd-fonts.open-dyslexic
+    nerd-fonts.noto
+    nerd-fonts.monaspace
+    nerd-fonts.hack
+    nerd-fonts.hasklug
+    nerd-fonts.fira-code
   ];
 
   # List packages installed in system profile. To search, run:

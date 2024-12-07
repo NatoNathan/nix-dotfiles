@@ -12,7 +12,7 @@ nix-rebuild :=  if os == "Darwin" {
 
 # Deploy the system configuration
 deploy:
-    echo "Deploying system configuration"
+    @echo "Deploying system configuration"
     {{ nix-rebuild }} --flake .
 
 rollback:

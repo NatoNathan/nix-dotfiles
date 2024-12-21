@@ -40,10 +40,12 @@
     ./editors/nvim.nix
     ./editors/vscode.nix
     ./editors/helix.nix
+    ./editors/appflowy.nix
     ./editors/zed.nix
     ./shells/zsh.nix
     ./terminals/kitty.nix
     ./browsers/firefox.nix
+    ./browsers/google-chrome.nix
   ];
   home.stateVersion = "24.05";
   programs.home-manager.enable = true;

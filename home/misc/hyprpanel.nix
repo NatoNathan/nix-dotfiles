@@ -6,7 +6,7 @@
     enable = true;
     theme = "catppuccin_mocha";
     hyprland.enable = true;
-
+    overwrite.enable = true;
     settings = {
       theme.font = {
         name = "CaskaydiaCove NF";

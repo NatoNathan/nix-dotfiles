@@ -127,7 +127,6 @@
         ''grim -g "$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.x),\(.y) \((.width / .scale) | floor)x\((.height / .scale) | floor)"')" - | swappy -f -'';
       exec-once = [
         "lxqt-policykit-agent"
-        "${pkgs.hyprpanel}/bin/hyprpanel"
         "1password --silent"
         "clipse -listen"
         "hyprctl setcursor Bibata-Modern-Ice 24"
@@ -318,6 +317,7 @@
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
     NIXOS_OZONE_WL = "1";
     OP_SERVICE_ACCOUNT_TOKEN = "$(secret-tool lookup service-account-token one-password)";
+    TERM = "ghostty";
   };
 
   # Gnome Keyring

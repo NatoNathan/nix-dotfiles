@@ -44,6 +44,7 @@
     ./editors/zed.nix
     ./shells/zsh.nix
     ./terminals/kitty.nix
+    ./terminals/ghostty.nix
     ./browsers/firefox.nix
     ./browsers/google-chrome.nix
   ];

@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   username,
   ...
 }:
@@ -11,7 +10,7 @@
       "nix-command"
       "flakes"
     ];
-    trusted-users = [username];
+    trusted-users = [ username ];
     substituters = [
       "https://cache.nixos.org/"
       "https://devenv.cachix.org"
@@ -20,7 +19,6 @@
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
     ];
   };
- 
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -35,6 +33,8 @@
     nerd-fonts.hack
     nerd-fonts.hasklug
     nerd-fonts.fira-code
+    nerd-fonts.departure-mono
+    departure-mono
   ];
 
   # List packages installed in system profile. To search, run:

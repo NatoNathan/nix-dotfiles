@@ -111,7 +111,7 @@
       };
 
       # My Programs
-      "$terminal" = "kitty";
+      "$terminal" = "ghostty";
       "$browser" = "firefox";
       "$stableBrowser" = "firefox";
       "$fileManager" = "kitty nnn";
@@ -123,7 +123,8 @@
       "$audio" = "hyprpanel -t audiomenu";
       "$email" = "protonmail-desktop";
       "$snapshot" = ''grim -g "$(slurp)" - | swappy -f -'';
-      "$fullSnapshot" = ''grim -g "$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.x),\(.y) \((.width / .scale) | floor)x\((.height / .scale) | floor)"')" - | swappy -f -'';
+      "$fullSnapshot" =
+        ''grim -g "$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.x),\(.y) \((.width / .scale) | floor)x\((.height / .scale) | floor)"')" - | swappy -f -'';
       exec-once = [
         "lxqt-policykit-agent"
         "${pkgs.hyprpanel}/bin/hyprpanel"
@@ -193,25 +194,23 @@
           "$mainMod ALT_L SHIFT, Tab, workspace, m-1"
 
         ]
-        ++ (
-          builtins.concatLists (
-            builtins.genList (
-              x:
-              let
-                ws =
-                  let
-                    c = (x + 1) / 10;
-                  in
-                  builtins.toString (x + 1 - (c * 10));
-              in
-              [
-                # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
-                "$mainMod, ${ws}, workspace, ${toString (x + 1)}"
-                "$mainMod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
-              ]
-            ) 10
-          )
-        );
+        ++ (builtins.concatLists (
+          builtins.genList (
+            x:
+            let
+              ws =
+                let
+                  c = (x + 1) / 10;
+                in
+                builtins.toString (x + 1 - (c * 10));
+            in
+            [
+              # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
+              "$mainMod, ${ws}, workspace, ${toString (x + 1)}"
+              "$mainMod SHIFT, ${ws}, movetoworkspace, ${toString (x + 1)}"
+            ]
+          ) 10
+        ));
 
       bindm = [
         # Move/Resize Windows
@@ -283,12 +282,12 @@
 
   gtk = {
     enable = true;
-    # Set the cursor theme  
+    # Set the cursor theme
     cursorTheme = {
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Ice";
       size = 24;
-    };    
+    };
     theme = {
       name = "Adwaita-dark";
       package = pkgs.gnome-themes-extra;
@@ -331,8 +330,6 @@
     ];
   };
 
-  
-
   programs.hyprlock = {
     enable = true;
     extraConfig = builtins.readFile ./hyprlock.conf;
@@ -351,8 +348,8 @@
       listener = [
         {
           timeout = 150;
-          on-timeout = "brightnessctl -s set 10";         # set monitor backlight to minimum, avoid 0 on OLED monitor.
-          on-resume = "brightnessctl -r";                 # monitor backlight restore.
+          on-timeout = "brightnessctl -s set 10"; # set monitor backlight to minimum, avoid 0 on OLED monitor.
+          on-resume = "brightnessctl -r"; # monitor backlight restore.
         }
         {
           timeout = 300;

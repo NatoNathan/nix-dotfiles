@@ -18,13 +18,17 @@
     kdePackages.qtwayland
     libsForQt5.qt5.qtwayland
     kdePackages.qtsvg
-    kdePackages.kio-fuse 
+    kdePackages.kio-fuse
     kdePackages.kio-extras
   ];
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   };
+
+  nixpkgs.overlays = [
+    inputs.hyprpanel.overlay
+  ];
 
   services.hypridle.enable = true;
   programs.hyprlock.enable = true;

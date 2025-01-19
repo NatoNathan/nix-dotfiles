@@ -4,7 +4,7 @@
     package = pkgs.kitty;
     enable = true;
     settings = {
-      font_family = "JetBrainsMono NF";
+      font_family = "departureMono Nerd Font";
       tab_bar_min_tabs = 1;
       tab_bar_edge = "bottom";
       tab_bar_style = "powerline";

@@ -22,6 +22,7 @@
   imports = [
     ./environments/hyprland.nix
     ./misc/walker.nix
+    ./misc/hyprpanel.nix
     ./tools/utils.nix
     ./tools/networking.nix
     ./tools/git.nix

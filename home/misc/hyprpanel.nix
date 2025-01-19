@@ -10,11 +10,13 @@
     theme = "catppuccin_mocha";
     hyprland.enable = true;
     overlay.enable = true;
+    overwrite.enable = true;
     settings = {
       theme.font = {
-        name = "CaskaydiaCove NF";
+        name = "departureMono Nerd Font";
         size = "16px";
       };
+      bar.launcher.autoDetectIcon = true;
       menus.dashboard.directories.enabled = false;
     };
   };

@@ -10,7 +10,6 @@
     brightnessctl
     hyprpicker
     python312Packages.gpustat
-    hyprpanel
   ];
   catppuccin.flavor = "mocha";
   catppuccin.enable = true;

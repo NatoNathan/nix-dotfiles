@@ -113,6 +113,9 @@
             pkgs = import nixpkgs {
               inherit system;
               config.allowUnfree = true;
+              overlays = [
+                inputs.hyprpanel.overlay
+              ];
             };
             username = "natt";
             hostname = "natt-framework-laptop";

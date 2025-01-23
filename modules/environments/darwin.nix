@@ -15,6 +15,7 @@
     casks = [
       { name= "zen-browser"; greedy = true; }
       { name= "arc"; greedy = true; }
+      { name="ghostty"; greedy=true; }
       "marta"
       "alfred"
     ];

@@ -17,14 +17,14 @@
     ./media/spotify.nix
     ./comms/discord.nix
     ./filemanagers/nnn.nix
-    ./editors/nvim.nix
+    # ./editors/nvim.nix
     ./editors/vscode.nix
     ./editors/helix.nix
     # ./editors/zed.nix
     ./shells/common.nix
     ./shells/zsh.nix
     ./terminals/kitty.nix
-    ./terminals/alacritty.nix
+    # ./terminals/ghostty.nix
     ./browsers/google-chrome.nix
   ];
 

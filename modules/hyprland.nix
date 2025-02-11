@@ -2,7 +2,9 @@
 {
   security.polkit.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
+  security.pam.services.greetd.fprintAuth = false;
   security.pam.services.login.enableGnomeKeyring = true;
+  security.pam.services.login.fprintAuth = false;
   services.gnome.gnome-keyring.enable = true;
   environment.variables = {
     XDG_RUNTIME_DIR = "/run/user/$UID";

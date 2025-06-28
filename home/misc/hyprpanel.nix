@@ -12,12 +12,10 @@
     overlay.enable = true;
     overwrite.enable = true;
     settings = {
-      theme.font = {
-        name = "departureMono Nerd Font";
-        size = "16px";
-      };
-      bar.launcher.autoDetectIcon = true;
-      menus.dashboard.directories.enabled = false;
+      "theme.font.name" = "departureMono Nerd Font";
+      "theme.font.size" = "16px";
+      "bar.launcher.autoDetectIcon" = true;
+      "menus.dashboard.directories.enabled" = false;
     };
   };
 }

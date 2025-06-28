@@ -6,7 +6,7 @@
     argocd
   ];
 
-  programs.argocd = {
+  programs.k9s = {
     enable = true;
   };
 }

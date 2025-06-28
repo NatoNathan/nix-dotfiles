@@ -8,5 +8,5 @@
 
   programs.argocd = {
     enable = true;
-  }
+  };
 }

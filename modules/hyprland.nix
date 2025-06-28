@@ -29,7 +29,7 @@
   };
 
   nixpkgs.overlays = [
-    inputs.hyprpanel.overlay
+    # inputs.hyprpanel.overlay
   ];
 
   services.hypridle.enable = true;

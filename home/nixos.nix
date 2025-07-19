@@ -32,6 +32,7 @@
     ./tools/tmux.nix
     ./tools/starship.nix
     ./tools/direnv.nix
+    ./tools/claude.nix
     ./media/spotify.nix
     ./media/tidal-hifi.nix
     ./media/mpv.nix

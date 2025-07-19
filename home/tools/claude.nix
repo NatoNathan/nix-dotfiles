@@ -1,6 +1,6 @@
-{ pkg, ... }:
+{ pkgs, ... }:
 {
   home.packages = [
-    pkg.claude-code
+    pkgs.claude-code
   ];
 }

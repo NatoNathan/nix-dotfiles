@@ -13,7 +13,7 @@
 
   environment.systemPackages = with pkgs; [
     wl-clipboard
-    lxqt.lxqt-policykit
+    hyprpolkitagent
     libsecret
     wireplumber
     xdg-desktop-portal-hyprland
@@ -28,9 +28,6 @@
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   };
 
-  nixpkgs.overlays = [
-    # inputs.hyprpanel.overlay
-  ];
 
   services.hypridle.enable = true;
   programs.hyprlock.enable = true;

@@ -13,22 +13,34 @@ This is a personal NixOS dotfiles repository using Nix Flakes for declarative sy
 For NixOS systems:
 ```bash
 # Build and switch to new configuration (from repo root)
-sudo nixos-rebuild switch --flake .#<hostname>
+sudo nixos-rebuild switch --sudo --flake .#<hostname>
 
 # Available hostnames: natt-home-pc, natt-framework-laptop
-sudo nixos-rebuild switch --flake .#natt-home-pc
+sudo nixos-rebuild switch --sudo --flake .#natt-home-pc
 
-# Test configuration without switching
-sudo nixos-rebuild test --flake .#<hostname>
+# Test configuration without switching (recommended before switch)
+sudo nixos-rebuild test --sudo --flake .#<hostname>
 
 # Build without switching
-sudo nixos-rebuild build --flake .#<hostname>
+sudo nixos-rebuild build --sudo --flake .#<hostname>
 ```
 
 For macOS systems:
 ```bash
 # Build and switch Darwin configuration
 darwin-rebuild switch --flake .#natt-macbook-pro
+
+# Test Darwin configuration
+darwin-rebuild check --flake .#natt-macbook-pro
+```
+
+### Home Manager Only Changes
+```bash
+# For user-level changes only (faster than full rebuild)
+home-manager switch --flake .#<username>@<hostname>
+
+# Example for NixOS
+home-manager switch --flake .#natt@natt-home-pc
 ```
 
 ### Flake Management
@@ -78,21 +90,26 @@ home-manager expire-generations "-30 days"
 
 ### Key Modules
 
-- `modules/system.nix` - Core system settings, fonts, and base packages
+- `modules/system.nix` - Core system settings, fonts, Nix configuration, and base packages
 - `modules/hyprland.nix` - Hyprland window manager configuration
 - `modules/environments/nixos.nix` - NixOS-specific environment setup
+- `modules/environments/darwin.nix` - macOS-specific environment setup
 - `home/nixos.nix` - Base home-manager configuration for NixOS
+- `home/darwin.nix` - Base home-manager configuration for macOS
 - `home/environments/hyprland.nix` - Hyprland user configuration
 
 ### Home Manager Structure
 
 Home configuration is organized by application category:
 - `browsers/` - Firefox, Chrome configurations
-- `editors/` - Neovim, VSCode, Helix, Zed
-- `terminals/` - Kitty, Ghostty, Alacritty
-- `tools/` - Git, SSH, Tmux, utilities
-- `media/` - Spotify, MPV, OBS
-- `shells/` - Zsh configuration
+- `editors/` - Neovim, VSCode, Helix, Zed configurations
+- `terminals/` - Kitty, Ghostty, Alacritty configurations
+- `tools/` - Git, SSH, Tmux, networking, and various utilities
+- `media/` - Spotify, MPV, OBS, Tidal configurations
+- `shells/` - Zsh configuration with starship prompt
+- `comms/` - Discord and other communication apps
+- `filemanagers/` - mc, nnn file manager configurations
+- `misc/` - Walker, AnyRun, HyprPanel, K8s tools
 
 ## Hardware-Specific Considerations
 
@@ -127,3 +144,21 @@ The flake supports both NixOS and Darwin systems:
 - macOS systems use `darwinConfigurations`
 - Different package sets available: `pkgs`, `pkgs-stable`, `pkgs-21ef15c`
 - Home-manager integrated for both platforms with platform-specific modules
+
+## Important Flake Inputs
+
+Key external dependencies managed through flake inputs:
+- `hyprland` - Latest Hyprland compositor from upstream
+- `hyprpanel` - HyprPanel status bar for Hyprland
+- `nixvim` - Neovim configuration framework
+- `catppuccin` - Catppuccin theme integration
+- `anyrun` - Application launcher
+- `mac-app-util` - macOS app integration utilities
+
+## Configuration Tips
+
+- Always test configurations with `nixos-rebuild test` before switching
+- Use `nix flake check` to validate flake syntax before building
+- For iterative home-manager changes, use `home-manager switch` for faster rebuilds
+- Check `git status` before making system changes to track configuration drift
+- Keep hardware-configuration.nix files host-specific and never share between machines

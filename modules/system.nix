@@ -20,8 +20,7 @@
     ];
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  # Allow unfree packages - handled by flake.nix pkgs configuration
 
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono

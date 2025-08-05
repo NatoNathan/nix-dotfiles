@@ -1,12 +1,6 @@
 { pkgs, ... }:
 {
-  nixpkgs.overlays = [
-    (self: super: {
-      mpv = super.mpv.override {
-        scripts = [ self.mpvScripts.mpris ];
-      };
-    })
-  ];
+  # MPV overlay removed - packages configured globally in flake.nix
   home.packages = [
     pkgs.mpv
   ];

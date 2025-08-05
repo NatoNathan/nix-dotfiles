@@ -1,0 +1,21 @@
+Deploying system configuration
+nixos-rebuild switch --use-remote-sudo --flake .
+nixos-rebuild: warning: --use-remote-sudo is deprecated, use --sudo instead
+warning: Git tree '/home/natt/.dotfiles' is dirty
+evaluation warning: You have set specialArgs.pkgs, which means that options like nixpkgs.config
+                    and nixpkgs.overlays will be ignored. If you wish to reuse an already created
+                    pkgs, which you know is configured correctly for this NixOS configuration,
+                    please import the `nixosModules.readOnlyPkgs` module from the nixpkgs flake or
+                    `(modulesPath + "/misc/nixpkgs/read-only.nix"), and set `{ nixpkgs.pkgs = <your pkgs>; }`.
+                    This properly disables the ignored options to prevent future surprises.
+nixos-rebuild: warning: --use-remote-sudo is deprecated, use --sudo instead
+building the system configuration...
+warning: Git tree '/home/natt/.dotfiles' is dirty
+evaluation warning: You have set specialArgs.pkgs, which means that options like nixpkgs.config
+                    and nixpkgs.overlays will be ignored. If you wish to reuse an already created
+                    pkgs, which you know is configured correctly for this NixOS configuration,
+                    please import the `nixosModules.readOnlyPkgs` module from the nixpkgs flake or
+                    `(modulesPath + "/misc/nixpkgs/read-only.nix"), and set `{ nixpkgs.pkgs = <your pkgs>; }`.
+                    This properly disables the ignored options to prevent future surprises.
+evaluation warning: natt profile: You have set either `nixpkgs.config` or `nixpkgs.overlays` while using `home-manager.useGlobalPkgs`.
+                    This will soon not be possible. Please remove all `nixpkgs` options when using `home-manager.useGlobalPkgs`.

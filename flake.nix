@@ -18,10 +18,6 @@
     };
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    hyprpanel = {
-      url = "github:Jas-SinghFSU/HyprPanel";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     catppuccin.url = "github:catppuccin/nix";
 
@@ -86,6 +82,7 @@
               ./hosts/natt-home-pc
               home-manager.nixosModules.home-manager
               {
+                nixpkgs.pkgs = pkgs;
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "backup";
@@ -114,9 +111,6 @@
             pkgs = import nixpkgs {
               inherit system;
               config.allowUnfree = true;
-              overlays = [
-                inputs.hyprpanel.overlay
-              ];
             };
             username = "natt";
             hostname = "natt-framework-laptop";
@@ -139,6 +133,7 @@
 
               home-manager.nixosModules.home-manager
               {
+                nixpkgs.pkgs = pkgs;
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "backup";

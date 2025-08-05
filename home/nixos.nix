@@ -22,7 +22,9 @@
   imports = [
     ./environments/hyprland.nix
     ./misc/walker.nix
-    ./misc/hyprpanel.nix
+    ./misc/waybar.nix
+    ./misc/mako.nix
+    ./misc/swayosd.nix
     ./misc/k8s.nix
     ./tools/utils.nix
     ./tools/networking.nix

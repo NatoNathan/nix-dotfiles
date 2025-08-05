@@ -4,6 +4,8 @@
     kubernetes-helm
     kubectl
     argocd
+    flux
+    k0sctl
   ];
 
   programs.k9s = {

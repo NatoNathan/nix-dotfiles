@@ -118,18 +118,21 @@
       "$menu" = "walker";
       "$passwardManager" = "1password --quick-access";
       "$1passwordClient" = "1password --toggle";
-      "$notification" = "hyprpanel -t notificationsmenu";
-      "$dashboad" = "hyprpanel -t dashboardmenu";
-      "$audio" = "hyprpanel -t audiomenu";
+      "$notification" = "makoctl menu dmenu";
+      "$clearNotifications" = "makoctl dismiss --all";
+      "$audio" = "pavucontrol";
       "$email" = "protonmail-desktop";
       "$snapshot" = ''grim -g "$(slurp)" - | swappy -f -'';
       "$fullSnapshot" =
         ''grim -g "$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | "\(.x),\(.y) \((.width / .scale) | floor)x\((.height / .scale) | floor)"')" - | swappy -f -'';
       exec-once = [
-        "lxqt-policykit-agent"
+        "hyprpolkitagent"
         "1password --silent"
         "clipse -listen"
         "hyprctl setcursor Bibata-Modern-Ice 24"
+        "waybar"
+        "mako"
+        "swayosd-server"
       ];
 
       cursor = {
@@ -141,7 +144,7 @@
       bind =
         [
           # General
-          "$mainMod, C, killactive,"
+          "$mainMod SHIFT, BackSpace, killactive,"
           "$mainMod, M, exit,"
           "$mainMod, V, togglefloating,"
 
@@ -154,7 +157,7 @@
           "$mainMod, Q, exec, $terminal"
           "$mainMod, E, exec, $fileManager"
           "$mainMod, N, exec, $notification"
-          "$mainMod, D, exec, $dashboad"
+          "$mainMod SHIFT, N, exec, $clearNotifications"
           "$mainMod, A, exec, $audio"
           "$mainMod, R, exec, $menu"
           "$mainMod, W, exec, $browser"
@@ -164,6 +167,21 @@
           "Control_L SHIFT, SPACE, exec, $passwardManager"
           "$mainMod SHIFT, SPACE, exec, $1passwordClient"
           "$mainMod, T, exec, $email"
+          
+          # Copy/Cut/Paste shortcuts (Mac-style)
+          "$mainMod, C, exec, wl-copy"
+          "$mainMod, V, exec, wl-paste --no-newline"
+          "$mainMod, X, exec, wl-copy && echo -n | wl-copy"
+          
+          # Terminal clear shortcut (sends Ctrl+L to active window)
+          "$mainMod, K, exec, hyprctl dispatch sendshortcut CTRL, l"
+          
+          # Screenshots (Mac-style)
+          "$mainMod SHIFT, 3, exec, $fullSnapshot"
+          "$mainMod SHIFT, 4, exec, $snapshot"
+          "$mainMod SHIFT, 5, exec, grimblast --notify copysave area"
+          
+          # Legacy screenshot shortcuts
           ", Print, exec, $fullSnapshot"
           "$mainMod, Print, exec, $snapshot"
 
@@ -220,16 +238,16 @@
       ];
 
       bindel = [
-        # Audio
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        # Brightness
-        ", XF86MonBrightnessUp, exec, brightnessctl -s set +5%" # Increase brightness by 5%
-        ", XF86MonBrightnessDown, exec, brightnessctl -s set 5%-" # Decrease brightness by 5%
+        # Audio with SwayOSD
+        ", XF86AudioRaiseVolume, exec, swayosd-client --output-volume raise"
+        ", XF86AudioLowerVolume, exec, swayosd-client --output-volume lower"
+        # Brightness with SwayOSD
+        ", XF86MonBrightnessUp, exec, swayosd-client --brightness raise"
+        ", XF86MonBrightnessDown, exec, swayosd-client --brightness lower"
       ];
 
       bindl = [
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioMute, exec, swayosd-client --output-volume mute-toggle"
         ", XF86AudioPlay, exec, playerctl play-pause"
         ", XF86AudioPrev, exec, playerctl previous"
         ", XF86AudioNext, exec, playerctl next"

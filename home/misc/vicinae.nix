@@ -1,6 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
   home.packages = [
-    pkgs.vicinae
+    inputs.vicinae.packages.${pkgs.system}.default
   ];
 
   # Vicinae configuration

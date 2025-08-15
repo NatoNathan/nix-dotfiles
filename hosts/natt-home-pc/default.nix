@@ -24,10 +24,10 @@
     ../../modules/flatpak.nix
     ../../modules/steam.nix
     ../../modules/ollama/nvidia.nix
+    ../../modules/lanzaboote.nix
   ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  # Bootloader configuration moved to modules/lanzaboote.nix
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelModules = [ "sg" ];

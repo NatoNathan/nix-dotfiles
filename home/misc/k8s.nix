@@ -4,7 +4,7 @@
     kubernetes-helm
     kubectl
     argocd
-    flux
+    fluxcd
     k0sctl
   ];
 

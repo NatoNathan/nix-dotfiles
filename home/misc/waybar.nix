@@ -12,8 +12,8 @@
         spacing = 4;
 
         modules-left = [ "hyprland/workspaces" "hyprland/window" ];
-        modules-center = [ "clock" ];
-        modules-right = [ "custom/spotify" "tray" "network" "bluetooth" "wireplumber" "battery" "custom/power" ];
+        modules-center = [ "mpris" ];
+        modules-right = [ "tray" "network" "bluetooth" "wireplumber" "battery" "clock" "custom/power" ];
 
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -41,7 +41,6 @@
         };
 
         clock = {
-          timezone = "America/New_York";
           format = "{:%I:%M %p}";
           format-alt = "{:%A, %B %d, %Y (%R)}";
           tooltip-format = "<tt><small>{calendar}</small></tt>";
@@ -66,21 +65,23 @@
         };
 
         network = {
-          format-wifi = "  {signalStrength}%";
-          format-ethernet = "  Connected";
-          tooltip-format = "{ifname} via {gwaddr}";
-          format-disconnected = "⚠  Disconnected";
+          format-wifi = "󰖩";
+          format-ethernet = "󰈀";
+          tooltip-format-wifi = "Interface: {ifname}\nSSID: {essid}\nSignal: {signalStrength}% ({frequency} MHz)\nIPv4: {ipaddr}/{cidr}\nIPv6: {ipaddr6}\nGateway: {gwaddr}\nBandwidth: ↓{bandwidthDownBytes} ↑{bandwidthUpBytes}\nNetmask: {netmask}";
+          tooltip-format-ethernet = "Interface: {ifname}\nIPv4: {ipaddr}/{cidr}\nIPv6: {ipaddr6}\nGateway: {gwaddr}\nBandwidth: ↓{bandwidthDownBytes} ↑{bandwidthUpBytes}\nNetmask: {netmask}";
+          format-disconnected = "󰌙";
+          tooltip-format-disconnected = "Network disconnected";
           on-click = "nm-connection-editor";
         };
 
         bluetooth = {
-          format = " {status}";
-          format-connected = " {device_alias}";
-          format-connected-battery = " {device_alias} {device_battery_percentage}%";
-          tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
-          tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
-          tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
-          tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+          format = "󰂯";
+          format-connected = "󰂱";
+          format-disabled = "󰂲";
+          tooltip-format = "Controller: {controller_alias}\nAddress: {controller_address}\nStatus: {status}\nConnections: {num_connections}";
+          tooltip-format-connected = "Controller: {controller_alias}\nAddress: {controller_address}\nConnections: {num_connections}\n\nDevices:\n{device_enumerate}";
+          tooltip-format-enumerate-connected = "• {device_alias} ({device_address})";
+          tooltip-format-enumerate-connected-battery = "• {device_alias} ({device_address}) - {device_battery_percentage}%";
           on-click = "blueman-manager";
         };
 
@@ -104,25 +105,27 @@
           format-icons = ["" "" "" "" ""];
         };
 
-        "custom/spotify" = {
-          format = "{icon} {}";
-          escape = true;
-          return-type = "json";
-          max-length = 40;
-          interval = 30;
-          on-click = "playerctl -p spotify play-pause";
-          on-click-right = "spotify";
-          scroll-step = 1;
-          on-scroll-up = "playerctl -p spotify next";
-          on-scroll-down = "playerctl -p spotify previous";
-          smooth-scrolling-threshold = 10.0;
-          exec = "playerctl -p spotify -f '{\"text\": \"{{artist}} - {{title}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' metadata --follow";
-          exec-if = "pgrep spotify";
-          format-icons = {
-            "Playing" = "";
-            "Paused" = "";
-            "Stopped" = "";
+        mpris = {
+          format = "{player_icon}";
+          format-paused = "{status_icon}";
+          player-icons = {
+            "default" = "󰎆";
+            "spotify" = "󰓇";
+            "firefox" = "󰈹";
+            "chrome" = "󰊯";
           };
+          status-icons = {
+            "playing" = "󰐊";
+            "paused" = "󰏤";
+            "stopped" = "󰓛";
+          };
+          tooltip-format = "{player}: {artist} - {title}";
+          tooltip-format-stopped = "No media playing";
+          max-length = 40;
+          on-click = "playerctl play-pause";
+          on-click-right = "playerctl stop";
+          on-scroll-up = "playerctl next";
+          on-scroll-down = "playerctl previous";
         };
 
         "custom/power" = {
@@ -192,17 +195,17 @@
         color: #a6e3a1;
       }
 
-      #custom-spotify {
+      #mpris {
         padding: 0 10px;
         color: #1db954;
         font-weight: bold;
       }
 
-      #custom-spotify.Playing {
+      #mpris.playing {
         color: #1db954;
       }
 
-      #custom-spotify.Paused {
+      #mpris.paused {
         color: #6c7086;
       }
 

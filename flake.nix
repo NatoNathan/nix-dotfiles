@@ -30,6 +30,11 @@
       url = "github:dc-tec/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -44,6 +49,7 @@
       home-manager,
       catppuccin,
       nixvim,
+      lanzaboote,
       ...
     }:
     {

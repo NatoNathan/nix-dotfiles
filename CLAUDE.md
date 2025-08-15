@@ -154,6 +154,48 @@ Key external dependencies managed through flake inputs:
 - `catppuccin` - Catppuccin theme integration
 - `anyrun` - Application launcher
 - `mac-app-util` - macOS app integration utilities
+- `lanzaboote` - Secure Boot support for NixOS
+
+## Secure Boot Setup
+
+The system is configured with Lanzaboote for Secure Boot support. After switching to a new configuration with Lanzaboote enabled, follow these manual steps:
+
+### Initial Secure Boot Setup
+
+1. **Generate Secure Boot keys**:
+   ```bash
+   sudo sbctl create-keys
+   ```
+
+2. **Enroll Microsoft keys** (required for Windows dual-boot compatibility):
+   ```bash
+   sudo sbctl enroll-keys --microsoft
+   ```
+
+3. **Sign existing boot files**:
+   ```bash
+   sudo sbctl sign-all
+   ```
+
+4. **Verify setup**:
+   ```bash
+   sudo sbctl status
+   ```
+
+5. **Enable Secure Boot in BIOS/UEFI**:
+   - Reboot and enter BIOS/UEFI settings
+   - Navigate to Secure Boot settings
+   - Enable Secure Boot
+   - Save and exit
+
+### After System Updates
+
+After each `nixos-rebuild switch`, you may need to sign new boot files:
+```bash
+sudo sbctl sign-all
+```
+
+The `sbctl status` command will show if any files need signing.
 
 ## Configuration Tips
 

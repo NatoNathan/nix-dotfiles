@@ -116,6 +116,7 @@
       "$stableBrowser" = "firefox";
       "$fileManager" = "kitty nnn";
       "$menu" = "walker";
+      "$vicinae" = "vicinae";
       "$passwardManager" = "1password --quick-access";
       "$1passwordClient" = "1password --toggle";
       "$notification" = "makoctl menu dmenu";
@@ -133,6 +134,7 @@
         "waybar"
         "mako"
         "swayosd-server"
+        "vicinae server"
       ];
 
       cursor = {
@@ -160,6 +162,7 @@
           "$mainMod SHIFT, N, exec, $clearNotifications"
           "$mainMod, A, exec, $audio"
           "$mainMod, R, exec, $menu"
+          "$mainMod SHIFT, R, exec, $vicinae"
           "$mainMod, W, exec, $browser"
           "$mainMod SHIFT, W, exec, $browser --private-window"
           "$mainMod, F,  exec, $stableBrowser"

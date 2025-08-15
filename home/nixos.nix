@@ -22,6 +22,7 @@
   imports = [
     ./environments/hyprland.nix
     ./misc/walker.nix
+    ./misc/vicinae.nix
     ./misc/waybar.nix
     ./misc/mako.nix
     ./misc/swayosd.nix

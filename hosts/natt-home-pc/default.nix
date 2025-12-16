@@ -101,7 +101,7 @@
   environment.variables = {
     NVD_BACKEND = "direct";
     # Force NVIDIA Vulkan driver to be used
-    VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.json";
+    VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
   };
 
   environment.systemPackages = with pkgs; [
@@ -162,6 +162,7 @@
   # Desktop Environment Configuration
   # Enable/disable different window managers/desktop environments
   # Only one should typically be enabled at a time
+  hyprland.enable = true;   # Hyprland tiling window manager
   niri.enable = false;      # Scrollable-tiling Wayland compositor
   cosmic.enable = false;    # System76 COSMIC desktop environment
   

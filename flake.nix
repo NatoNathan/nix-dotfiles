@@ -59,6 +59,7 @@
       catppuccin,
       nixvim,
       lanzaboote,
+      nixos-cosmic,
       ...
     }:
     {

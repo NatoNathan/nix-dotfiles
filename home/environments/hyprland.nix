@@ -15,7 +15,10 @@
   catppuccin.enable = true;
   wayland.windowManager.hyprland = {
     enable = true;
-    systemd.variables = [ "--all" ];
+    # Disable systemd integration as recommended by NixOS wiki
+    # It conflicts with UWSM and causes --watchdog-fd errors with greetd
+    # UWSM is enabled at system level in modules/hyprland.nix
+    systemd.enable = false;
     settings = {
 
       xwayland = {
@@ -106,9 +109,11 @@
         };
 
       };
-      gestures = {
-        workspace_swipe = true;
-      };
+
+      # New gesture syntax for Hyprland 0.51+
+      gesture = [
+        "3, horizontal, workspace"  # 3-finger horizontal swipe to switch workspaces
+      ];
 
       # My Programs
       "$terminal" = "ghostty";

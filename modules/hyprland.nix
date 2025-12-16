@@ -1,6 +1,14 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, lib, config, ... }:
 {
-  security.polkit.enable = true;
+  options = {
+    hyprland.enable = lib.mkEnableOption "Hyprland window manager";
+  };
+
+  config = lib.mkIf config.hyprland.enable {
+    # Required for XDG portals with home-manager
+    environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+
+    security.polkit.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
   security.pam.services.greetd.fprintAuth = false;
   security.pam.services.login.enableGnomeKeyring = true;
@@ -8,6 +16,7 @@
   services.gnome.gnome-keyring.enable = true;
   environment.variables = {
     XDG_RUNTIME_DIR = "/run/user/$UID";
+    NIXOS_OZONE_WL = "1";  # Enable Wayland for Electron/Chromium apps
     #NVD_BACKEND = "direct";
   };
 
@@ -26,6 +35,8 @@
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    withUWSM = true;  # Recommended by NixOS wiki for session management
+    xwayland.enable = true;  # Enable XWayland support for X11 apps
   };
 
 
@@ -45,10 +56,7 @@
     ];
   };
 
-  # xdg.portal = {
-  #   enable = true;
-  #   extraPortals = [
-  #     pkgs.xdg-desktop-portal-hyprland
-  #   ];
-  # };
+  # Enable XDG portals (required for Flatpak and screensharing)
+  xdg.portal.enable = true;
+  };
 }

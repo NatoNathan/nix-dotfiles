@@ -1,13 +1,13 @@
 { inputs, pkgs, lib, config, ... }:
 {
+  # Import niri module from flake unconditionally 
+  imports = [ inputs.niri.nixosModules.niri ];
+
   options = {
     niri.enable = lib.mkEnableOption "Niri window manager";
   };
 
   config = lib.mkIf config.niri.enable {
-    # Import niri module from flake
-    imports = [ inputs.niri.nixosModules.niri ];
-
     # Enable niri
     programs.niri.enable = true;
 

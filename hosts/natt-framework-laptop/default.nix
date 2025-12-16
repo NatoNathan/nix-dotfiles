@@ -145,6 +145,7 @@
   # Desktop Environment Configuration
   # Enable/disable different window managers/desktop environments
   # Only one should typically be enabled at a time
+  hyprland.enable = true;   # Hyprland tiling window manager
   niri.enable = false;      # Scrollable-tiling Wayland compositor
   cosmic.enable = false;    # System76 COSMIC desktop environment
 

@@ -42,7 +42,6 @@ in
 {
   services.swayosd = {
     enable = true;
-    display = ":0";
     stylePath = swayosdStyle;
     topMargin = 0.9;
   };

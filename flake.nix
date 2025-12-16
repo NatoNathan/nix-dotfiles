@@ -19,6 +19,10 @@
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
+    niri.url = "github:sodiboo/niri-flake";
+
+    nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+
     catppuccin.url = "github:catppuccin/nix";
 
     anyrun = {
@@ -82,18 +86,21 @@
               inherit hostname;
               inherit pkgs-stable;
               inherit pkgs-21ef15c;
-              inherit pkgs;
             };
           in
           nixpkgs.lib.nixosSystem {
             inherit specialArgs;
-            inherit system;
             modules = [
               catppuccin.nixosModules.catppuccin
+              nixos-cosmic.nixosModules.default
               ./hosts/natt-home-pc
               home-manager.nixosModules.home-manager
               {
                 nixpkgs.pkgs = pkgs;
+                nix.settings = {
+                  substituters = [ "https://cosmic.cachix.org/" ];
+                  trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+                };
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "backup";
@@ -131,20 +138,23 @@
               inherit hostname;
               inherit pkgs-stable;
               inherit pkgs-21ef15c;
-              inherit pkgs;
             };
           in
           nixpkgs.lib.nixosSystem {
             inherit specialArgs;
-            inherit system;
             modules = [
               catppuccin.nixosModules.catppuccin
+              nixos-cosmic.nixosModules.default
               ./hosts/natt-framework-laptop
               nixos-hardware.nixosModules.framework-intel-core-ultra-series1
 
               home-manager.nixosModules.home-manager
               {
                 nixpkgs.pkgs = pkgs;
+                nix.settings = {
+                  substituters = [ "https://cosmic.cachix.org/" ];
+                  trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+                };
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "backup";

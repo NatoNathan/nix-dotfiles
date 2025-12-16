@@ -17,7 +17,11 @@
     ./hardware-configuration.nix
     ../../modules/system.nix
     ../../modules/environments/nixos.nix
+    ../../modules/graphics.nix
+    ../../modules/nix-ld.nix
     ../../modules/hyprland.nix
+    ../../modules/niri.nix
+    ../../modules/cosmic.nix
     ../../modules/greetd.nix
     ../../modules/onepassword/linux.nix
     ../../modules/docker.nix
@@ -26,6 +30,7 @@
     ../../modules/keyd.nix
     ../../modules/tailscale.nix
     ../../modules/ollama
+    ../../modules/zed.nix
   ];
 
   # Bootloader configuration
@@ -65,12 +70,12 @@
     ];
   };
 
-  services.logind.extraConfig = ''
-  # map the power button to suspend
-  HandlePowerKey=suspend
-  # map long power button press to power off
-  HandleSuspendKey=poweroff
-  '';
+  services.logind.settings.Login = {
+    # map the power button to suspend
+    HandlePowerKey = "suspend";
+    # map long power button press to power off
+    HandleSuspendKey = "poweroff";
+  };
 
   services.fwupd = {
     enable = true;
@@ -136,6 +141,12 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  # Desktop Environment Configuration
+  # Enable/disable different window managers/desktop environments
+  # Only one should typically be enabled at a time
+  niri.enable = false;      # Scrollable-tiling Wayland compositor
+  cosmic.enable = false;    # System76 COSMIC desktop environment
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

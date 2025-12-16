@@ -16,7 +16,11 @@
     ./hardware-configuration.nix
     ../../modules/system.nix
     ../../modules/environments/nixos.nix
+    ../../modules/graphics.nix
+    ../../modules/nix-ld.nix
     ../../modules/hyprland.nix
+    ../../modules/niri.nix
+    ../../modules/cosmic.nix
     ../../modules/greetd.nix
     ../../modules/onepassword/linux.nix
     ../../modules/liquidctl.nix
@@ -25,6 +29,7 @@
     ../../modules/steam.nix
     ../../modules/ollama/nvidia.nix
     ../../modules/lanzaboote.nix
+    ../../modules/zed.nix
   ];
 
   # Bootloader configuration moved to modules/lanzaboote.nix
@@ -95,10 +100,17 @@
 
   environment.variables = {
     NVD_BACKEND = "direct";
+    # Force NVIDIA Vulkan driver to be used
+    VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.json";
   };
 
   environment.systemPackages = with pkgs; [
     nvidia-vaapi-driver
+  ];
+
+  # NVIDIA-specific graphics configuration
+  hardware.graphics.extraPackages = with pkgs; [
+    config.boot.kernelPackages.nvidiaPackages.stable
   ];
 
   # Enable OpenGL
@@ -147,9 +159,15 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+  # Desktop Environment Configuration
+  # Enable/disable different window managers/desktop environments
+  # Only one should typically be enabled at a time
+  niri.enable = false;      # Scrollable-tiling Wayland compositor
+  cosmic.enable = false;    # System76 COSMIC desktop environment
+  
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).

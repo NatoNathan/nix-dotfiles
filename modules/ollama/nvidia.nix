@@ -1,5 +1,5 @@
-{ ... }: {
+{ pkgs, ... }: {
   imports =[ ./default.nix ];
 
-  services.ollama.acceleration = "cuda";
+  services.ollama.package = pkgs.ollama-cuda;
 }
